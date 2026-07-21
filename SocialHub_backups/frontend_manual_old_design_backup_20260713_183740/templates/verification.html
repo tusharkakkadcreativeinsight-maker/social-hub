@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Verification - SocialHub{% endblock %}
+{% block content %}
+<div class="page-container">
+  <div class="page-header">
+    <h1>Account Verification</h1>
+  </div>
+  <div class="verification-container">
+    <div class="verification-card">
+      <h2>Request Verified Badge</h2>
+      <p class="verification-desc">Get a blue verified badge next to your name to show authenticity.</p>
+      <form id="verification-form">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="full-name" placeholder="Your full name" required>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="category">
+            <option value="creator">Creator</option>
+            <option value="public_figure">Public Figure</option>
+            <option value="brand">Brand</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Reason for Verification</label>
+          <textarea id="reason" rows="4" placeholder="Tell us why you should be verified" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary">Submit Request</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

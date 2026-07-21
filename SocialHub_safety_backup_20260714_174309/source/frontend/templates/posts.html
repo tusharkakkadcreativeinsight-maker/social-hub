@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts - SocialHub</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar"><a href="/" class="logo"><i class="fas fa-heart"></i> SocialHub</a><div class="nav-search"><i class="fas fa-search"></i><input type="text" id="global-search" placeholder="Search creators, posts, #tags..." onkeypress="if(event.key==='Enter')window.location.href='/search?q='+this.value"></div><div class="nav-links" id="nav-links"></div></nav>
+    <div class="container"><div id="feed"><div class="loading"><div class="spinner"></div></div></div></div>
+    <div class="modal-overlay" id="create-post-modal" onclick="if(event.target===this)this.classList.remove('active')"><div class="modal"><div class="modal-header"><h3>Create Post</h3><button class="modal-close" onclick="document.getElementById('create-post-modal').classList.remove('active')">&times;</button></div><form onsubmit="handleCreatePost(event)"><textarea id="post-content" class="form-control" rows="4" placeholder="What's on your mind?" style="border:none;box-shadow:none;background:transparent;padding:0;font-size:18px;resize:none"></textarea><input type="file" id="post-files" multiple accept="image/*,video/*" style="margin:16px 0;display:block;width:100%;color:var(--text);font-size:13px"><button type="submit" class="btn btn-primary btn-block">Post</button></form></div></div>
+    <div class="modal-overlay" id="comments-modal" onclick="if(event.target===this)this.classList.remove('active')"><div class="modal"><div class="modal-header"><h3>Comments</h3><button class="modal-close" onclick="document.getElementById('comments-modal').classList.remove('active')">&times;</button></div><div id="comments-content"></div></div></div>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

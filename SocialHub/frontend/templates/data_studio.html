@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Data Studio - SocialHub{% endblock %}
+{% block page_class %}data-studio{% endblock %}
+{% block content %}
+<section class="content-stack"><div class="page-header"><h1>Data Studio</h1></div><section class="stats-grid" id="data-studio-stats"><div class="stat-card"><h2 id="stat-1">--</h2><span class="stat-label">Metric 1</span></div><div class="stat-card"><h2 id="stat-2">--</h2><span class="stat-label">Metric 2</span></div><div class="stat-card"><h2 id="stat-3">--</h2><span class="stat-label">Metric 3</span></div><div class="stat-card"><h2 id="stat-4">--</h2><span class="stat-label">Metric 4</span></div></section><section class="dashboard-grid"><div class="surface-card"><h2>Quick actions</h2><div class="quick-actions-grid"><button onclick="seedDemoData()">Seed demo data</button><label class="upload-tile">Upload original media<input id="original-media-input" type="file" hidden onchange="uploadOriginalMedia(this.files[0])"></label><button onclick="loadOriginalMedia()">Refresh media</button></div></div><div class="surface-card"><h2>Original media</h2><div id="original-media-grid" class="media-grid"></div></div></section></section>
+{% endblock %}

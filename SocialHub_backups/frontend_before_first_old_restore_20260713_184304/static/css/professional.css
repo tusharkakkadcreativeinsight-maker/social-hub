@@ -1,0 +1,360 @@
+/* SocialHub professional polish layer
+   This file intentionally sits after style.css and animations.css so it can
+   improve the whole frontend without changing every template. */
+
+:root {
+  --glass-highlight: rgba(255, 255, 255, .08);
+  --card-hover-shadow: 0 24px 70px rgba(0, 0, 0, .32);
+  --soft-ring: 0 0 0 1px rgba(255, 255, 255, .04) inset;
+}
+
+html[data-theme="light"] {
+  --glass-highlight: rgba(255, 255, 255, .72);
+  --card-hover-shadow: 0 24px 70px rgba(15, 23, 42, .14);
+  --soft-ring: 0 0 0 1px rgba(15, 23, 42, .04) inset;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.auth-body {
+  min-height: 100vh;
+}
+
+.user-avatar {
+  flex: 0 0 auto;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(120deg, transparent 0 32%, rgba(56, 189, 248, .06) 48%, transparent 64%),
+    radial-gradient(circle at 50% 110%, rgba(124, 58, 237, .16), transparent 34%);
+}
+
+.page-enter {
+  animation: professionalFadeUp .38s ease both;
+}
+
+@keyframes professionalFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page-container > * {
+  min-width: 0;
+}
+
+.page-hero,
+.section-card,
+.side-card,
+.post-card,
+.tool-card,
+.metric-card,
+.chart-card,
+.feature-panel,
+.auth-card,
+.modal,
+.dropdown-menu,
+.chat-layout {
+  position: relative;
+  box-shadow: var(--shadow), var(--soft-ring);
+}
+
+.page-hero::before,
+.section-card::before,
+.side-card::before,
+.post-card::before,
+.feature-panel::before,
+.auth-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--glass-highlight), transparent 42%);
+  opacity: .75;
+}
+
+.page-hero > *,
+.section-card > *,
+.side-card > *,
+.post-card > *,
+.feature-panel > *,
+.auth-card > * {
+  position: relative;
+}
+
+.section-card,
+.post-card,
+.feature-panel,
+.metric-card,
+.side-card,
+.explore-card,
+.result-card,
+.notification-item,
+.list-item,
+.btn,
+.icon-button,
+.avatar-button,
+.tab,
+.story-bubble img,
+.tile {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease, color .18s ease;
+}
+
+.section-card:hover,
+.feature-panel:hover,
+.metric-card:hover,
+.side-card:hover,
+.post-card:hover,
+.explore-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--card-hover-shadow);
+}
+
+.btn:hover,
+.icon-button:hover,
+.avatar-button:hover,
+.tab:hover,
+.story-bubble:hover img,
+.tile:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary,
+.sidebar-create,
+.tab.active {
+  box-shadow: 0 12px 34px rgba(124, 58, 237, .28);
+}
+
+.btn-primary:hover,
+.sidebar-create:hover {
+  filter: saturate(1.12) brightness(1.05);
+}
+
+.page-title i,
+.feature-panel h3 i,
+.empty-state i {
+  color: var(--secondary);
+}
+
+.page-hero .page-title {
+  max-width: 920px;
+}
+
+.page-subtitle {
+  max-width: 760px;
+  font-size: 1.02rem;
+}
+
+.hero-actions,
+.toolbar,
+.tabs {
+  align-items: center;
+}
+
+.content-grid > pre,
+pre.section-card,
+[data-ai-result] {
+  max-width: 100%;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+img,
+video {
+  max-width: 100%;
+}
+
+.list-item span,
+.conversation-item span,
+.result-card span {
+  display: grid;
+  min-width: 0;
+}
+
+.list-item small,
+.conversation-item small,
+.result-card small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.form-control,
+.comment-composer input {
+  transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
+}
+
+.form-control:focus,
+.comment-composer input:focus {
+  border-color: rgba(56, 189, 248, .58);
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, .12);
+  outline: none;
+}
+
+.auth-card label,
+.modal label,
+.section-card label,
+.feature-panel label {
+  display: grid;
+  gap: 7px;
+  color: var(--subtle);
+  font-weight: 750;
+}
+
+.auth-card .brand {
+  margin-bottom: 4px;
+}
+
+.auth-art {
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-art::after {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  right: -120px;
+  bottom: -140px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .16);
+}
+
+.chat-layout {
+  min-height: 560px;
+}
+
+.message-list {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(124, 58, 237, .10), transparent 28%),
+    radial-gradient(circle at 80% 90%, rgba(56, 189, 248, .08), transparent 30%);
+}
+
+.comments-drawer header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.comments-drawer header button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1.35rem;
+}
+
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  display: grid;
+  place-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, .42);
+  backdrop-filter: blur(10px);
+}
+
+.loading-overlay.hidden {
+  display: none;
+}
+
+.mobile-bottom-nav a.active,
+.mobile-bottom-nav a:hover,
+.mobile-bottom-nav button:hover,
+.side-nav a.active {
+  color: var(--text);
+}
+
+.mobile-bottom-nav a.active i,
+.mobile-bottom-nav button:hover i {
+  color: var(--secondary);
+}
+
+@media (max-width: 1320px) {
+  .app-shell { grid-template-columns: 88px minmax(0, 1fr); }
+  .page-container { width: min(100%, 1120px); }
+}
+
+@media (max-width: 860px) {
+  .topbar {
+    box-shadow: 0 10px 34px rgba(0, 0, 0, .16);
+  }
+
+  .page-title {
+    font-size: clamp(1.7rem, 9vw, 2.55rem);
+  }
+
+  .card-title-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .card-title-row .btn,
+  .hero-actions .btn,
+  .hero-actions button,
+  .hero-actions a {
+    width: 100%;
+  }
+
+  .tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .reels-viewport,
+  .story-viewer-shell,
+  .chat-layout {
+    border-radius: 22px;
+  }
+}
+
+@media (max-width: 430px) {
+  .topbar-actions { gap: 6px; }
+  .icon-button,
+  .avatar-button { width: 40px; height: 40px; }
+  .page-hero,
+  .section-card,
+  .feature-panel,
+  .auth-card { padding: 16px; }
+  .btn { min-height: 40px; padding-inline: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter,
+  .section-card,
+  .post-card,
+  .feature-panel,
+  .metric-card,
+  .side-card,
+  .explore-card,
+  .btn,
+  .icon-button,
+  .avatar-button,
+  .tab,
+  .story-bubble img,
+  .tile {
+    animation: none !important;
+    transition: none !important;
+  }
+}

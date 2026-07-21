@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Search - SocialHub{% endblock %}
+{% block content %}
+<div class="page-container">
+  <div class="search-header">
+    <div class="search-input-wrapper">
+      <input type="text" id="search-input" placeholder="Search users, posts, reels, hashtags..." autocomplete="off">
+      <button id="clear-search" class="clear-btn">&times;</button>
+    </div>
+    <div id="search-suggestions" class="search-suggestions"></div>
+  </div>
+  <div class="search-tabs">
+    <button class="search-tab active" data-filter="all">All</button>
+    <button class="search-tab" data-filter="users">Users</button>
+    <button class="search-tab" data-filter="posts">Posts</button>
+    <button class="search-tab" data-filter="reels">Reels</button>
+    <button class="search-tab" data-filter="hashtags">Hashtags</button>
+  </div>
+  <div id="search-results" class="search-results">
+    <div class="empty-state">
+      <p>Start typing to search</p>
+    </div>
+  </div>
+  <div id="recent-searches" class="recent-searches" style="display:none;">
+    <h3>Recent Searches</h3>
+    <ul id="recent-list"></ul>
+    <button id="clear-recent" class="text-btn">Clear all</button>
+  </div>
+</div>
+{% endblock %}

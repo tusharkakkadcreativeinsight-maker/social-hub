@@ -1,0 +1,8 @@
+.env
+backend/.env
+*.db
+test_*.db
+__pycache__/
+.pytest_cache/
+frontend/uploads/
+backups/

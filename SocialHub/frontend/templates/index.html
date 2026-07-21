@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Home - SocialHub{% endblock %}
+{% block page_class %}home{% endblock %}
+{% block content %}
+<section class="feed-layout instagram-home" aria-label="SocialHub home feed">
+    <div class="feed-column">
+        <section class="hero-card auth-guest-only home-hero-card">
+            <div class="hero-content">
+                <span class="hero-kicker"><i class="fas fa-sparkles"></i> SocialHub</span>
+                <h1>Share moments, reels, stories and creator content.</h1>
+                <p>Follow creators, join live rooms, collaborate, sell products, and grow with AI-powered tools.</p>
+                <div class="hero-actions"><a class="btn btn-primary" href="/register">Get started</a><a class="btn btn-outline" href="/login">Login</a></div>
+            </div>
+        </section>
+
+        <section class="stories-card insta-panel">
+            <div class="card-title-row"><h2>Stories</h2><button class="btn btn-sm btn-outline" type="button" onclick="showCreateStory()">Your story</button></div>
+            <div id="stories-container"><div class="stories-row skeleton-row"><span class="skeleton skeleton-avatar"></span><span class="skeleton skeleton-avatar"></span><span class="skeleton skeleton-avatar"></span></div></div>
+        </section>
+
+        <section class="reels-strip-card insta-panel" aria-label="Reels preview">
+            <div class="card-title-row"><h2>Reels</h2><a class="btn btn-sm btn-outline" href="/reels">Watch reels</a></div>
+            <div class="reels-mini-row" id="home-reels-row">
+                <a class="reel-mini-card" href="/reels"><i class="fas fa-play"></i><span>Trending reels</span></a>
+                <button class="reel-mini-card" type="button" onclick="showCreateReel()"><i class="fas fa-video"></i><span>Create reel</span></button>
+                <a class="reel-mini-card sponsored" href="/explore"><i class="fas fa-hashtag"></i><span>Explore trends</span></a>
+            </div>
+        </section>
+
+        <section class="create-post-card insta-create-card">
+            <img id="create-post-avatar" src="/static/images/default_avatar.svg" alt="Your avatar">
+            <button type="button" class="create-post-input" onclick="showCreatePost()">What's on your mind?</button>
+            <div class="create-post-actions"><button type="button" onclick="showCreatePost()"><i class="fas fa-image"></i> Photo</button><button type="button" onclick="showCreateReel()"><i class="fas fa-video"></i> Reel</button><button type="button" onclick="showCreateStory()"><i class="fas fa-clock"></i> Story</button></div>
+        </section>
+
+        <section id="feed-posts" class="instagram-feed-stream" aria-label="Home feed"><div class="loading"><div class="spinner"></div><span>Loading feed…</span></div></section>
+        <div id="feed-sentinel" class="feed-sentinel" aria-hidden="true"></div>
+    </div>
+
+    <aside class="home-aside" aria-label="Suggested users and sponsored content">
+        <section class="side-card suggested-users-card"><div class="card-title-row"><h3>Suggested for you</h3><a href="/search">See all</a></div><div id="suggested-users-list" class="mini-list"><div class="empty-mini">Loading suggestions…</div></div></section>
+        <section class="side-card sponsored-card"><span class="sponsored-label">Sponsored</span><h3>Creator Studio Pro</h3><p>Schedule posts, generate captions, track analytics, and grow your SocialHub presence.</p><a class="btn btn-sm btn-primary" href="/creator-dashboard">Open tools</a></section>
+    </aside>
+</section>
+{% endblock %}

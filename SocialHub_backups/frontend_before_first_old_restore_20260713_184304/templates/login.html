@@ -1,0 +1,4 @@
+{% extends 'auth_base.html' %}
+{% block title %}Login - SocialHub{% endblock %}
+{% block page_name %}login{% endblock %}
+{% block content %}<form class='auth-card' id='login-form' data-action='login-form'><a class='brand' href='/'><span class='brand-mark'><i class='fas fa-bolt'></i></span><span>SocialHub</span></a><h1>Welcome back</h1><p class='muted'>Secure, accessible authentication for SocialHub.</p><label>Email<input class='form-control' name='email' type='email' autocomplete='email' required></label><label>Password<div class='password-wrap'><input class='form-control' name='password' type='password' autocomplete='current-password' required><button class='btn btn-sm btn-secondary' type='button' data-action='toggle-password'>Show</button></div></label><a class='muted' href='/forgot-password'>Forgot password?</a><button class='btn btn-primary' type='submit'>Welcome back</button><a class='muted' href='/register'>Create account</a></form>{% endblock %}

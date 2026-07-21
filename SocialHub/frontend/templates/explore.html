@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Explore - SocialHub{% endblock %}
+{% block page_class %}explore{% endblock %}
+{% block content %}
+<section class="content-stack"><div class="page-header"><div><h1>Explore</h1><p>Trending posts, reels, hashtags and creators.</p></div></div><div class="explore-tabs"><button class="explore-tab active" onclick="switchExploreTab && switchExploreTab('posts')">Posts</button><button class="explore-tab" onclick="switchExploreTab && switchExploreTab('reels')">Reels</button><button class="explore-tab" onclick="switchExploreTab && switchExploreTab('hashtags')">Hashtags</button><button class="explore-tab" onclick="switchExploreTab && switchExploreTab('people')">People</button></div><div id="explore-content" class="explore-grid"><div id="feed-posts"></div></div></section>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends "auth_base.html" %}
+{% block title %}Two-Factor Authentication - SocialHub{% endblock %}
+{% block page_name %}two-factor{% endblock %}
+{% block content %}
+<form id="two-factor-form" class="auth-card stack"><h1>Two-factor authentication</h1><p>Enter the code from your authenticator app.</p><div id="error" class="form-error hidden"></div><label>Code<input id="two-factor-code" class="form-control" inputmode="numeric" autocomplete="one-time-code" required></label><button class="btn btn-primary btn-block">Verify</button></form>
+{% endblock %}

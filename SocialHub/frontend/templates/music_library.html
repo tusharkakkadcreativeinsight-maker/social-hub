@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Music Library - SocialHub{% endblock %}
+{% block page_class %}music-library{% endblock %}
+{% block content %}
+<section class="content-stack"><div class="page-header"><div><h1>Music Library</h1><p>Browse tracks for reels.</p></div><button class="btn btn-primary" onclick="showCreateReel();setTimeout(()=>loadMusicLibrary(),200)">Use in reel</button></div><div id="music-library-grid" class="pro-grid"></div></section>
+{% endblock %}

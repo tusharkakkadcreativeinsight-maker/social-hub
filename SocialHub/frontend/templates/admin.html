@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - SocialHub{% endblock %}
+{% block page_class %}admin{% endblock %}
+{% block content %}
+<section class="admin-page"><div class="page-header"><div><h1>Admin Dashboard</h1><p>Moderate users, reports, verification, marketplace and analytics.</p></div></div><div class="admin-tabs"><a href="/admin" class="active">Dashboard</a><button data-admin-tab="users">Users</button><button data-admin-tab="reports">Reports</button><button data-admin-tab="analytics">Analytics</button></div><div id="admin-dashboard"><div class="loading"><div class="spinner"></div></div></div><div class="table-wrap" id="admin-table-region"></div></section>
+{% endblock %}

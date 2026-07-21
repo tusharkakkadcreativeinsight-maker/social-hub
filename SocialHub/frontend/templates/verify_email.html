@@ -1,0 +1,276 @@
+{% extends "auth_base.html" %}
+{% block title %}Verify Email - SocialHub{% endblock %}
+{% block page_name %}verify-email{% endblock %}
+{% block content %}
+<form id="verify-email-form" class="auth-card stack" novalidate>
+  <h1>Verify your email</h1>
+  <p>We sent a 6-digit code to your email address. Enter it below to activate your account.</p>
+  <div id="error" class="form-error hidden" role="alert" aria-live="assertive"></div>
+  <div id="success" class="form-success hidden" role="alert"></div>
+  
+  <div class="otp-container" role="group" aria-label="6-digit verification code">
+    <div class="otp-inputs">
+      <input type="text" id="otp-0" class="otp-input" inputmode="numeric" autocomplete="one-time-code" maxlength="1" pattern="[0-9]" aria-label="Digit 1" required>
+      <input type="text" id="otp-1" class="otp-input" inputmode="numeric" autocomplete="off" maxlength="1" pattern="[0-9]" aria-label="Digit 2" required>
+      <input type="text" id="otp-2" class="otp-input" inputmode="numeric" autocomplete="off" maxlength="1" pattern="[0-9]" aria-label="Digit 3" required>
+      <input type="text" id="otp-3" class="otp-input" inputmode="numeric" autocomplete="off" maxlength="1" pattern="[0-9]" aria-label="Digit 4" required>
+      <input type="text" id="otp-4" class="otp-input" inputmode="numeric" autocomplete="off" maxlength="1" pattern="[0-9]" aria-label="Digit 5" required>
+      <input type="text" id="otp-5" class="otp-input" inputmode="numeric" autocomplete="off" maxlength="1" pattern="[0-9]" aria-label="Digit 6" required>
+    </div>
+  </div>
+  
+  <button class="btn btn-primary btn-block" type="submit" id="verify-btn">
+    <span class="btn-text">Verify Email</span>
+    <span class="btn-loader hidden"><i class="fas fa-spinner fa-spin"></i> Verifying...</span>
+  </button>
+  
+  <div class="auth-links">
+    <button type="button" id="resend-otp-btn" class="btn-link">
+      Resend code <span id="resend-countdown" class="countdown"></span>
+    </button>
+  </div>
+  <div class="auth-links"><a href="/login">Back to login</a></div>
+</form>
+
+<style>
+.otp-container {
+  margin: 20px 0;
+  text-align: center;
+}
+.otp-inputs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+.otp-input {
+  width: 48px;
+  height: 56px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  border: 2px solid var(--border-color, #e5e7eb);
+  border-radius: 12px;
+  background: var(--card-bg, #ffffff);
+  color: var(--text-color, #111827);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  caret-color: transparent;
+}
+.otp-input:focus {
+  border-color: var(--primary, #6366f1);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+.otp-input.filled {
+  border-color: var(--primary, #6366f1);
+  background: rgba(99, 102, 241, 0.05);
+}
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--primary, #6366f1);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 8px 0;
+  text-decoration: underline;
+}
+.btn-link:disabled {
+  color: #94a3b8;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+.countdown {
+  color: #64748b;
+  font-size: 13px;
+  margin-left: 4px;
+}
+</style>
+
+<script>
+(function() {
+  const form = document.getElementById('verify-email-form');
+  const errorDiv = document.getElementById('error');
+  const successDiv = document.getElementById('success');
+  const verifyBtn = document.getElementById('verify-btn');
+  const resendBtn = document.getElementById('resend-otp-btn');
+  const countdown = document.getElementById('resend-countdown');
+  const inputs = document.querySelectorAll('.otp-input');
+  let cooldownInterval = null;
+
+  // OTP input navigation - auto-focus, backspace, paste
+  inputs.forEach((input, index) => {
+    input.addEventListener('input', function(e) {
+      const val = this.value.replace(/[^0-9]/g, '');
+      this.value = val;
+      if (val) {
+        this.classList.add('filled');
+        if (index < inputs.length - 1) inputs[index + 1].focus();
+      } else {
+        this.classList.remove('filled');
+      }
+    });
+
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Backspace' && !this.value && index > 0) {
+        inputs[index - 1].focus();
+        inputs[index - 1].value = '';
+        inputs[index - 1].classList.remove('filled');
+      }
+      if (e.key === 'ArrowRight' && index < inputs.length - 1) inputs[index + 1].focus();
+      if (e.key === 'ArrowLeft' && index > 0) inputs[index - 1].focus();
+    });
+
+    input.addEventListener('paste', function(e) {
+      e.preventDefault();
+      const paste = (e.clipboardData || window.clipboardData).getData('text');
+      const digits = paste.replace(/[^0-9]/g, '').slice(0, 6);
+      digits.split('').forEach((digit, i) => {
+        if (inputs[i]) {
+          inputs[i].value = digit;
+          inputs[i].classList.add('filled');
+        }
+      });
+      inputs[Math.min(digits.length, 5)].focus();
+    });
+  });
+
+  function getOtp() {
+    let code = '';
+    inputs.forEach(inp => code += inp.value);
+    return code;
+  }
+
+  function setOtp(code) {
+    code.split('').forEach((digit, i) => {
+      if (inputs[i]) {
+        inputs[i].value = digit;
+        inputs[i].classList.add('filled');
+      }
+    });
+  }
+
+  function showError(msg) {
+    errorDiv.textContent = msg;
+    errorDiv.classList.remove('hidden');
+    successDiv.classList.add('hidden');
+  }
+
+  function showSuccess(msg) {
+    successDiv.textContent = msg;
+    successDiv.classList.remove('hidden');
+    errorDiv.classList.add('hidden');
+  }
+
+  function hideMessages() {
+    errorDiv.classList.add('hidden');
+    successDiv.classList.add('hidden');
+  }
+
+  function setLoading(loading) {
+    const btnText = verifyBtn.querySelector('.btn-text');
+    const btnLoader = verifyBtn.querySelector('.btn-loader');
+    if (loading) {
+      btnText.classList.add('hidden');
+      btnLoader.classList.remove('hidden');
+      verifyBtn.disabled = true;
+    } else {
+      btnText.classList.remove('hidden');
+      btnLoader.classList.add('hidden');
+      verifyBtn.disabled = false;
+    }
+  }
+
+  function startResendCountdown(seconds) {
+    if (cooldownInterval) clearInterval(cooldownInterval);
+    resendBtn.disabled = true;
+    countdown.textContent = `(${seconds}s)`;
+    cooldownInterval = setInterval(() => {
+      seconds--;
+      if (seconds <= 0) {
+        clearInterval(cooldownInterval);
+        cooldownInterval = null;
+        resendBtn.disabled = false;
+        countdown.textContent = '';
+      } else {
+        countdown.textContent = `(${seconds}s)`;
+      }
+    }, 1000);
+  }
+
+  // Resend OTP handler
+  resendBtn.addEventListener('click', async function() {
+    if (resendBtn.disabled) return;
+    const email = prompt('Enter your email to resend the verification code:');
+    if (!email) return;
+    
+    resendBtn.disabled = true;
+    try {
+      const res = await fetch('/api/auth/resend-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showSuccess('A new verification code has been sent to your email.');
+        startResendCountdown(60);
+      } else {
+        const msg = data.detail || 'Could not resend code. Please try again.';
+        if (res.status === 429) {
+          startResendCountdown(60);
+          showError(msg);
+        } else {
+          showError(msg);
+          resendBtn.disabled = false;
+        }
+      }
+    } catch (e) {
+      showError('Network error. Please try again.');
+      resendBtn.disabled = false;
+    }
+  });
+
+  // Form submit
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    hideMessages();
+    
+    const otp = getOtp();
+    if (otp.length !== 6) {
+      showError('Please enter all 6 digits of the verification code.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch('/api/auth/verify-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: otp })
+      });
+      const data = await res.json();
+      
+      if (res.ok) {
+        showSuccess('Email verified successfully! Redirecting to login...');
+        setTimeout(() => {
+          window.location.href = '/login?verified=true';
+        }, 1500);
+      } else {
+        const msg = data.detail || 'Invalid or expired verification code.';
+        showError(msg);
+        // Clear inputs for retry
+        inputs.forEach(inp => { inp.value = ''; inp.classList.remove('filled'); });
+        inputs[0].focus();
+      }
+    } catch (e) {
+      showError('Network error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  });
+
+  // Focus first input on load
+  inputs[0].focus();
+})();
+</script>
+{% endblock %}

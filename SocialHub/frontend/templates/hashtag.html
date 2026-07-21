@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}#{{ hashtag }} - SocialHub{% endblock %}
+{% block page_class %}hashtag{% endblock %}
+{% block content %}
+<section class="content-stack"><div class="page-header"><h1>#{{ hashtag }}</h1></div><div id="hashtag-results" class="profile-posts-grid"><div class="empty-state">Posts for this hashtag will appear here.</div></div></section>
+{% endblock %}

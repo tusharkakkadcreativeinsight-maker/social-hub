@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Verification - SocialHub{% endblock %}
+{% block page_class %}verification{% endblock %}
+{% block content %}
+<section class="content-stack narrow"><div class="page-header"><h1>Account Verification</h1></div><form id="verification-form" class="surface-card stack"><h2>Request verified badge</h2><label>Full name<input class="form-control" id="full-name" required></label><label>Category<select class="form-control" id="category"><option value="creator">Creator</option><option value="public_figure">Public figure</option><option value="brand">Brand</option><option value="other">Other</option></select></label><label>Reason<textarea class="form-control" id="reason" rows="4" required></textarea></label><button class="btn btn-primary">Submit request</button></form></section>
+{% endblock %}

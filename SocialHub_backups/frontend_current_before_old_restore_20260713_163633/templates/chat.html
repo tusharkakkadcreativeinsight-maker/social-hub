@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Messages - SocialHub{% endblock %}
+{% block page_name %}chat{% endblock %}
+{% block content %}
+<section class="chat-layout"><aside class="conversation-list"><div class="section-card"><h2>Messages</h2><input class="form-control" placeholder="Search conversations"></div>{% for i in range(8) %}<button class="conversation-item"><img class="avatar-sm" src="/static/images/default_avatar.svg"><span><b>creator{{ i+1 }}</b><small class="muted">Active now - Tap to chat</small></span></button>{% endfor %}</aside><section class="chat-window"><header class="section-card card-title-row"><button class="btn btn-secondary btn-sm" data-action="chat-back"><i class="fas fa-arrow-left"></i></button><strong>SocialHub Chat</strong><span class="chip">Online</span></header><div class="message-list"><div class="message">Hey! Welcome to the redesigned chat.</div><div class="message mine">Looks clean and responsive.</div></div><form class="message-composer"><button class="icon-button" type="button"><i class="fas fa-plus"></i></button><input class="form-control" placeholder="Message..."><button class="btn btn-primary"><i class="fas fa-paper-plane"></i></button></form></section></section>
+{% endblock %}

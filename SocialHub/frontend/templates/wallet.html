@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Creator Wallet - SocialHub{% endblock %}
+{% block page_class %}wallet{% endblock %}
+{% block content %}
+<section class="content-stack"><div class="page-header"><h1>Creator Wallet</h1></div><div class="stats-grid"><div class="stat-card"><span>Total Balance</span><h2>$<span id="balance">0.00</span></h2></div><div class="stat-card"><span>Total Earned</span><h2>$<span id="total-earned">0.00</span></h2></div><div class="stat-card"><span>Total Withdrawn</span><h2>$<span id="total-withdrawn">0.00</span></h2></div></div><div class="page-actions"><button class="btn btn-primary" id="generate-demo-btn">Generate Demo Earnings</button><button class="btn btn-outline" id="request-payout-btn">Request Payout</button></div><section class="surface-card"><h2>Earnings History</h2><div id="earnings-list" class="mini-list"><div class="empty-state">No earnings yet.</div></div></section></section>
+{% endblock %}

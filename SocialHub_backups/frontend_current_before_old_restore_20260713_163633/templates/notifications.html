@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Notifications - SocialHub{% endblock %}
+{% block page_name %}notifications{% endblock %}
+{% block content %}
+<header class="card-title-row"><div><h1 class="page-title">Notifications</h1><p class="page-subtitle">Follows, likes, comments, mentions, messages and system updates.</p></div><button class="btn btn-secondary">Mark all read</button></header><div class="tabs"><button class="tab active">All</button><button class="tab">Follows</button><button class="tab">Likes</button><button class="tab">Comments</button><button class="tab">Mentions</button><button class="tab">System</button></div><section id="notifications-container" class="section-card"><div class="skeleton-list"></div></section>
+{% endblock %}

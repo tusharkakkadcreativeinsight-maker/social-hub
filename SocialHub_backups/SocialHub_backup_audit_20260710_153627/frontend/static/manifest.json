@@ -1,0 +1,10 @@
+{
+  "name": "SocialHub",
+  "short_name": "SocialHub",
+  "description": "Premium creator-first social media dashboard",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090f",
+  "theme_color": "#ff4ecd",
+  "icons": []
+}

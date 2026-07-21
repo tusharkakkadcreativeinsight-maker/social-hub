@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Marketplace - SocialHub{% endblock %}
+{% block page_class %}marketplace{% endblock %}
+{% block content %}
+<section class="content-stack"><div class="page-header"><div><h1>Marketplace</h1><p>Discover creator products and premium listings.</p></div><button class="btn btn-primary" onclick="openModal('product-modal')"><i class="fas fa-plus"></i> Add product</button></div><section id="marketplace-grid" class="product-grid"></section><div class="modal-overlay" id="product-modal"><div class="modal"><div class="modal-header"><h2>Add Product</h2><button class="modal-close" onclick="closeModal('product-modal')">&times;</button></div><form onsubmit="createProductFromPage(event)" class="stack"><input id="product-title" class="form-control" placeholder="Product title" required><input id="product-price" class="form-control" type="number" step="0.01" placeholder="Price"><input id="product-category" class="form-control" placeholder="Category"><textarea id="product-description" class="form-control" placeholder="Description"></textarea><input id="product-image" class="form-control" type="file" accept="image/*"><button class="btn btn-primary btn-block">Publish</button></form></div></div></section>
+{% endblock %}

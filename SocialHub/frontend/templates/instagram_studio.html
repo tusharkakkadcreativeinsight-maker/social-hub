@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Instagram Studio - SocialHub{% endblock %}
+{% block page_class %}instagram-studio{% endblock %}
+{% block content %}
+<section class="content-stack"><div class="page-header"><h1>Instagram Studio</h1></div><section class="dashboard-grid"><div class="surface-card"><h2>Official Instagram Connection</h2><p>Uses Meta/Instagram OAuth only.</p><a class="btn btn-primary" href="/api/instagram/connect">Connect Instagram</a><div id="instagram-status" class="mini-list"></div></div><div class="surface-card"><h2>Imported Media</h2><div id="instagram-media-grid" class="media-grid"></div></div></section></section>
+{% endblock %}

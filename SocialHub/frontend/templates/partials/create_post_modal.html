@@ -1,0 +1,6 @@
+<div class="modal-overlay create-modal" id="create-post-modal" data-modal="create-post-modal" onclick="if(event.target===this)closeModal('create-post-modal')">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="create-post-title">
+    <div class="modal-header"><h2 id="create-post-title"><i class="fas fa-pen-to-square"></i> Create post</h2><button class="modal-close" type="button" onclick="closeModal('create-post-modal')">&times;</button></div>
+    <form id="create-post-form" onsubmit="handleCreatePost(event)" class="stack"><label for="post-content">Caption</label><textarea id="post-content" class="form-control" rows="4" maxlength="2200" placeholder="What's on your mind?"></textarea><label class="upload-dropzone" for="post-files"><i class="fas fa-images"></i><span>Add photos or videos</span><small>Images/video, max 100MB each</small><input type="file" id="post-files" multiple accept="image/*,video/*"></label><div id="post-preview" class="upload-preview"></div><div id="post-upload-progress" class="upload-progress hidden"><div id="post-upload-progress-fill"></div><span id="post-upload-progress-text"></span></div><button type="submit" class="btn btn-primary btn-block"><i class="fas fa-paper-plane"></i> Publish</button></form>
+  </div>
+</div>

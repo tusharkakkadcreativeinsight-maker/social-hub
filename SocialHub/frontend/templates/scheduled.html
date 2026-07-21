@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Scheduled Posts - SocialHub{% endblock %}
+{% block page_class %}scheduled{% endblock %}
+{% block content %}
+<section class="content-stack"><div class="page-header"><h1>Scheduled Posts</h1></div><section class="dashboard-grid"><form class="surface-card stack" onsubmit="schedulePostFromPage(event)"><h2>Schedule post</h2><textarea id="schedule-content" class="form-control" rows="4" required></textarea><input id="schedule-time" class="form-control" type="datetime-local" required><button class="btn btn-primary">Schedule</button></form><div class="surface-card"><h2>Upcoming</h2><div id="scheduled-list" class="mini-list"></div></div></section></section>
+{% endblock %}

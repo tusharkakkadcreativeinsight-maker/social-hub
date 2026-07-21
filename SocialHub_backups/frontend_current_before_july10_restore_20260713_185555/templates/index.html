@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialHub - Premium Social Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/animations.css">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#e1306c">
+</head>
+<body class="socialhub-dashboard">
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon"><i class="fas fa-heart"></i></span>
+                <span class="logo-text">SocialHub</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="/" class="nav-item active" title="Home">
+                <span class="nav-icon"><i class="fas fa-home"></i></span>
+                <span class="nav-label">Home</span>
+            </a>
+            <a href="/reels" class="nav-item" title="Reels">
+                <span class="nav-icon"><i class="fas fa-clapperboard"></i></span>
+                <span class="nav-label">Reels</span>
+            </a>
+            <a href="/stories" class="nav-item" title="Stories">
+                <span class="nav-icon"><i class="far fa-circle"></i></span>
+                <span class="nav-label">Stories</span>
+            </a>
+            <a href="/search" class="nav-item" title="Explore">
+                <span class="nav-icon"><i class="fas fa-compass"></i></span>
+                <span class="nav-label">Explore</span>
+            </a>
+            <a href="/notifications" class="nav-item" title="Notifications">
+                <span class="nav-icon"><i class="fas fa-bell"></i></span>
+                <span class="nav-label">Notifications</span>
+                <span class="nav-badge">3</span>
+            </a>
+            <a href="/chat" class="nav-item" title="Messages">
+                <span class="nav-icon"><i class="fas fa-comment-dots"></i></span>
+                <span class="nav-label">Messages</span>
+                <span class="nav-badge">6</span>
+            </a>
+            <a href="/profile/tushar" class="nav-item" title="Profile">
+                <span class="nav-icon"><i class="fas fa-user"></i></span>
+                <span class="nav-label">Profile</span>
+            </a>
+            <a href="/data-studio" class="nav-item" title="Analytics">
+                <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
+                <span class="nav-label">Analytics</span>
+            </a>
+            <a href="/settings" class="nav-item" title="Settings">
+                <span class="nav-icon"><i class="fas fa-gear"></i></span>
+                <span class="nav-label">Settings</span>
+            </a>
+        </nav>
+
+        <button class="create-btn" onclick="showCreatePost()">
+            <i class="fas fa-plus"></i>
+            <span>Create Post</span>
+        </button>
+
+        <div class="sidebar-footer">
+            <div class="user-card">
+                <img src="/static/images/default-avatar.png" alt="tushar" class="user-avatar">
+                <div class="user-info">
+                    <div class="user-name">tushar</div>
+                    <div class="user-handle">@tushar_kakkad</div>
+                </div>
+                <button class="user-menu"><i class="fas fa-ellipsis"></i></button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- TOP NAVBAR -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <form class="search-bar" action="/search" method="get">
+                <i class="fas fa-search"></i>
+                <input type="text" name="q" placeholder="Search creators, posts, #tags..." aria-label="Search SocialHub">
+            </form>
+        </div>
+
+        <div class="topbar-right">
+            <button class="theme-toggle theme-pill" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="far fa-circle"></i>
+                <span>Theme</span>
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="notification-bell" title="Notifications">
+                <i class="fas fa-bell"></i>
+                <span class="badge">3</span>
+            </button>
+            <div class="topbar-user">
+                <img src="/static/images/default-avatar.png" alt="tushar" class="user-avatar-sm">
+                <span>tushar</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- CENTER COLUMN -->
+        <section class="center-column">
+            <!-- HERO SECTION -->
+            <div class="hero-section glass-card">
+                <div class="hero-background">
+                    <div class="gradient-orb orb-1"></div>
+                    <div class="gradient-orb orb-2"></div>
+                </div>
+                
+                <div class="hero-content">
+                    <h1 class="hero-title">Share moments, discover creators, and grow your <span>community.</span></h1>
+                    <p class="hero-subtitle">SocialHub brings posts, reels, stories, trending conversations and creator tools into one clean, animated feed.</p>
+                    
+                    <div class="hero-actions">
+                        <button class="btn btn-gradient" onclick="isLoggedIn() ? showCreatePost() : (window.location.href='/register')">
+                            <i class="fas fa-plus"></i> Start Creating
+                        </button>
+                        <a href="/search" class="btn btn-glass">
+                            <i class="fas fa-compass"></i> Explore Feed
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-decoration" aria-hidden="true">
+                    <span class="star-dot"></span>
+                    <span class="star-dot"></span>
+                    <span class="star-dot"></span>
+                </div>
+            </div>
+
+            <!-- STORIES SECTION -->
+            <section class="stories-section glass-card">
+                <div class="section-header">
+                    <h2>Stories</h2>
+                    <a href="/stories" class="view-all">View all</a>
+                </div>
+                <div class="stories-row">
+                    <button class="story-item your-story">
+                        <div class="story-avatar">
+                            <img src="/static/images/default-avatar.png" alt="Your story">
+                            <span class="story-add"><i class="fas fa-plus"></i></span>
+                        </div>
+                        <span class="story-name">Your story</span>
+                    </button>
+                    <button class="story-item">
+                        <div class="story-avatar has-story">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80" alt="john_doe">
+                        </div>
+                        <span class="story-name">john_doe</span>
+                    </button>
+                    <button class="story-item">
+                        <div class="story-avatar has-story">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="anaya.s">
+                        </div>
+                        <span class="story-name">anaya.s</span>
+                    </button>
+                    <button class="story-item">
+                        <div class="story-avatar has-story">
+                            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=120&q=80" alt="rohit_7">
+                        </div>
+                        <span class="story-name">rohit_7</span>
+                    </button>
+                    <button class="story-item">
+                        <div class="story-avatar has-story">
+                            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=120&q=80" alt="creatrix">
+                        </div>
+                        <span class="story-name">creatrix</span>
+                    </button>
+                    <button class="story-item">
+                        <div class="story-avatar has-story">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="milan.xo">
+                        </div>
+                        <span class="story-name">milan.xo</span>
+                    </button>
+                    <button class="story-item">
+                        <div class="story-avatar has-story">
+                            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=120&q=80" alt="vikas_08">
+                        </div>
+                        <span class="story-name">vikas_08</span>
+                    </button>
+                    <button class="story-item see-more">
+                        <div class="story-avatar">
+                            <i class="fas fa-ellipsis"></i>
+                        </div>
+                        <span class="story-name">see more</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- TRENDING SECTION -->
+            <section class="trending-section glass-card">
+                <div class="section-header">
+                    <h2><i class="fas fa-fire"></i> Trending now</h2>
+                    <a href="/search" class="view-all">View all</a>
+                </div>
+                <div class="trending-chips">
+                    <a href="/search?q=worldcup2024" class="trend-chip">#worldcup2024</a>
+                    <a href="/search?q=tech" class="trend-chip">#tech</a>
+                    <a href="/search?q=travel" class="trend-chip">#travel</a>
+                    <a href="/search?q=motivation" class="trend-chip">#motivation</a>
+                    <a href="/search?q=music" class="trend-chip">#music</a>
+                </div>
+            </section>
+
+            <!-- COMPOSER CARD -->
+            <section class="composer-section glass-card">
+                <img src="/static/images/default-avatar.png" alt="Your avatar" class="composer-avatar">
+                <div class="composer-input-area">
+                    <button class="composer-input" onclick="showCreatePost()">What's on your mind, tushar?</button>
+                </div>
+                <div class="composer-options">
+                    <button onclick="showCreatePost()" class="composer-option" title="Photo">
+                        <i class="far fa-image"></i>
+                        <span>Photo</span>
+                    </button>
+                    <button onclick="showCreatePost()" class="composer-option" title="Video">
+                        <i class="far fa-video"></i>
+                        <span>Video</span>
+                    </button>
+                    <button onclick="showCreatePost()" class="composer-option" title="Reel">
+                        <i class="fas fa-clapperboard"></i>
+                        <span>Reel</span>
+                    </button>
+                    <button onclick="showCreatePost()" class="composer-option" title="Poll">
+                        <i class="fas fa-chart-simple"></i>
+                        <span>Poll</span>
+                    </button>
+                    <button onclick="showCreatePost()" class="composer-option" title="Feeling">
+                        <i class="far fa-face-smile"></i>
+                        <span>Feeling</span>
+                    </button>
+                </div>
+                <button class="btn btn-gradient btn-sm" onclick="showCreatePost()">Post</button>
+            </section>
+
+            <!-- FEED POSTS -->
+            <section class="feed">
+                <!-- POST CARD 1 -->
+                <article class="post-card glass-card">
+                    <div class="post-header">
+                        <div class="post-author">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="anaya.s" class="post-avatar">
+                            <div class="post-author-info">
+                                <div class="post-author-name">anaya.s <i class="fas fa-check-circle"></i></div>
+                                <div class="post-time">2h ago · <i class="fas fa-earth-americas"></i></div>
+                            </div>
+                        </div>
+                        <button class="post-menu-btn"><i class="fas fa-ellipsis"></i></button>
+                    </div>
+
+                    <div class="post-content">
+                        <p>Sunsets are proof that endings can be beautiful too. 🌅 ✨</p>
+                        <div class="post-hashtags">
+                            <a href="/search?q=sunset" class="hashtag">#sunset</a>
+                            <a href="/search?q=nature" class="hashtag">#nature</a>
+                            <a href="/search?q=photography" class="hashtag">#photography</a>
+                        </div>
+                    </div>
+
+                    <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1100&q=85" alt="Sunset" class="post-image">
+
+                    <div class="post-actions">
+                        <button class="action-btn active">
+                            <i class="fas fa-heart"></i>
+                            <span>12.8K</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="far fa-comment"></i>
+                            <span>348</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="far fa-share"></i>
+                            <span>92</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="far fa-bookmark"></i>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- POST CARD 2 -->
+                <article class="post-card glass-card">
+                    <div class="post-header">
+                        <div class="post-author">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="tech_master" class="post-avatar">
+                            <div class="post-author-info">
+                                <div class="post-author-name">tech_master <i class="fas fa-check-circle"></i></div>
+                                <div class="post-time">4h ago · <i class="fas fa-earth-americas"></i></div>
+                            </div>
+                        </div>
+                        <button class="post-menu-btn"><i class="fas fa-ellipsis"></i></button>
+                    </div>
+
+                    <div class="post-content">
+                        <p>Just launched the new AI-powered features! Check it out and let me know what you think 🚀</p>
+                        <div class="post-hashtags">
+                            <a href="/search?q=ai" class="hashtag">#ai</a>
+                            <a href="/search?q=tech" class="hashtag">#tech</a>
+                            <a href="/search?q=innovation" class="hashtag">#innovation</a>
+                        </div>
+                    </div>
+
+                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1100&q=85" alt="Tech" class="post-image">
+
+                    <div class="post-actions">
+                        <button class="action-btn active">
+                            <i class="fas fa-heart"></i>
+                            <span>8.3K</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="far fa-comment"></i>
+                            <span>521</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="far fa-share"></i>
+                            <span>215</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="far fa-bookmark"></i>
+                        </button>
+                    </div>
+                </article>
+            </section>
+        </section>
+
+        <!-- RIGHT SIDEBAR -->
+        <aside class="right-panel">
+            <!-- SUGGESTED CREATORS -->
+            <section class="side-card glass-card">
+                <div class="section-header">
+                    <h2><i class="fas fa-user-check"></i> Suggested Creators</h2>
+                    <a href="/search" class="view-all">View all</a>
+                </div>
+                <div class="creators-list">
+                    <div class="creator-item">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&q=80" alt="creative.vibes" class="creator-avatar">
+                        <div class="creator-info">
+                            <div class="creator-name">creative.vibes <i class="fas fa-check-circle"></i></div>
+                            <div class="creator-role">Digital Creator</div>
+                        </div>
+                        <button class="btn btn-gradient btn-xs">Follow</button>
+                    </div>
+                    <div class="creator-item">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=96&q=80" alt="tech_master" class="creator-avatar">
+                        <div class="creator-info">
+                            <div class="creator-name">tech_master <i class="fas fa-check-circle"></i></div>
+                            <div class="creator-role">Tech Enthusiast</div>
+                        </div>
+                        <button class="btn btn-gradient btn-xs">Follow</button>
+                    </div>
+                    <div class="creator-item">
+                        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=96&q=80" alt="travel.with.me" class="creator-avatar">
+                        <div class="creator-info">
+                            <div class="creator-name">travel.with.me <i class="fas fa-check-circle"></i></div>
+                            <div class="creator-role">Travel Vlogger</div>
+                        </div>
+                        <button class="btn btn-gradient btn-xs">Follow</button>
+                    </div>
+                    <div class="creator-item">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=96&q=80" alt="designhub" class="creator-avatar">
+                        <div class="creator-info">
+                            <div class="creator-name">designhub <i class="fas fa-check-circle"></i></div>
+                            <div class="creator-role">UI/UX Designer</div>
+                        </div>
+                        <button class="btn btn-gradient btn-xs">Follow</button>
+                    </div>
+                    <div class="creator-item">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=96&q=80" alt="fitness.guru" class="creator-avatar">
+                        <div class="creator-info">
+                            <div class="creator-name">fitness.guru <i class="fas fa-check-circle"></i></div>
+                            <div class="creator-role">Fitness Trainer</div>
+                        </div>
+                        <button class="btn btn-gradient btn-xs">Follow</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- QUICK ACTIONS -->
+            <section class="side-card glass-card">
+                <div class="section-header">
+                    <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                </div>
+                <div class="quick-actions-grid">
+                    <a href="/reels" class="quick-action">
+                        <i class="fas fa-video"></i>
+                        <span>Go Live</span>
+                    </a>
+                    <a href="/reels" class="quick-action">
+                        <i class="fas fa-film"></i>
+                        <span>Upload Reel</span>
+                    </a>
+                    <a href="/stories" class="quick-action">
+                        <i class="fas fa-circle-plus"></i>
+                        <span>Create Story</span>
+                    </a>
+                    <button onclick="showCreatePost()" class="quick-action">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Poll</span>
+                    </button>
+                    <a href="/posts" class="quick-action">
+                        <i class="fas fa-newspaper"></i>
+                        <span>Blog Post</span>
+                    </a>
+                    <a href="/scheduled" class="quick-action">
+                        <i class="fas fa-calendar"></i>
+                        <span>Event</span>
+                    </a>
+                    <a href="/marketplace" class="quick-action">
+                        <i class="fas fa-store"></i>
+                        <span>Marketplace</span>
+                    </a>
+                    <a href="/" class="quick-action">
+                        <i class="fas fa-ellipsis"></i>
+                        <span>See More</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- TRENDING HASHTAGS -->
+            <section class="side-card glass-card">
+                <div class="section-header">
+                    <h2><i class="fas fa-hashtag"></i> Trending Hashtags</h2>
+                    <a href="/search" class="view-all">View all</a>
+                </div>
+                <div class="hashtags-list">
+                    <a href="/search?q=worldcup2024" class="hashtag-item">
+                        <strong>#worldcup2024</strong>
+                        <span>1.2M posts</span>
+                    </a>
+                    <a href="/search?q=tech" class="hashtag-item">
+                        <strong>#tech</strong>
+                        <span>892K posts</span>
+                    </a>
+                    <a href="/search?q=travel" class="hashtag-item">
+                        <strong>#travel</strong>
+                        <span>750K posts</span>
+                    </a>
+                    <a href="/search?q=motivation" class="hashtag-item">
+                        <strong>#motivation</strong>
+                        <span>620K posts</span>
+                    </a>
+                    <a href="/search?q=music" class="hashtag-item">
+                        <strong>#music</strong>
+                        <span>580K posts</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- CREATOR TIPS -->
+            <section class="side-card glass-card creator-tips-card">
+                <h2><i class="fas fa-lightbulb"></i> Creator Tips</h2>
+                <p>Post consistently, engage with your audience and use trending hashtags to grow faster.</p>
+                <a href="/creator-dashboard" class="btn btn-gradient btn-block">Learn More</a>
+                <div class="tips-decoration"><i class="fas fa-rocket"></i></div>
+            </section>
+        </aside>
+    </main>
+
+
+    <!-- CREATE POST MODAL -->
+    <div class="modal" id="create-post-modal">
+        <div class="modal-overlay" onclick="closeCreatePostModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Post</h2>
+                <button class="modal-close" onclick="closeCreatePostModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form class="post-form" onsubmit="handleCreatePost(event)">
+                <textarea id="post-content" placeholder="What's on your mind?" rows="5" required></textarea>
+                <input type="file" id="post-files" multiple accept="image/*,video/*">
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeCreatePostModal()">Cancel</button>
+                    <button type="submit" class="btn btn-gradient">Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/animations.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<header class="topbar" role="banner">
+  <div class="mobile-brand"><a class="brand" href="/"><span class="brand-mark"><i class="fas fa-bolt"></i></span><span>SocialHub</span></a></div>
+  <form class="top-search" role="search" action="/search" method="get">
+    <label class="sr-only" for="global-search-input">Search SocialHub</label>
+    <i class="fas fa-search" aria-hidden="true"></i>
+    <input id="global-search-input" name="q" type="search" autocomplete="off" placeholder="Search creators, posts, #tags…" data-global-search>
+  </form>
+  <nav class="top-actions" aria-label="Account actions" id="nav-links">
+    <button class="icon-btn theme-toggle" type="button" title="Theme" aria-label="Change theme"><i class="fas fa-moon"></i></button>
+    <button class="icon-btn" type="button" data-action="open-create" data-create-type="post" aria-label="Create"><i class="fas fa-plus"></i></button>
+    <button class="icon-btn" type="button" data-action="toggle-popover" data-target="notification-menu" aria-label="Notifications"><i class="fas fa-bell"></i><span id="notif-badge" class="badge hidden">0</span></button>
+    <a class="icon-btn" href="/chat" aria-label="Messages"><i class="fas fa-envelope"></i></a>
+    <button class="avatar-button" type="button" data-action="toggle-popover" data-target="user-menu" aria-label="User menu"><img src="/static/images/default_avatar.svg" alt="" id="topbar-avatar"></button>
+  </nav>
+</header>
