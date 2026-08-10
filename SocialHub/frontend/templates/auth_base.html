@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#070B14">
+    <title>{% block title %}SocialHub Auth{% endblock %}</title>
+    <script>
+        (function(){try{var p=localStorage.getItem('socialhub-theme')||'system';var m=matchMedia('(prefers-color-scheme: dark)');var t=p==='system'?(m.matches?'dark':'light'):p;document.documentElement.dataset.theme=t;document.documentElement.dataset.themePreference=p;document.documentElement.style.colorScheme=t}catch(e){document.documentElement.dataset.theme='dark'}})();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body data-page="{% block page_name %}auth{% endblock %}" class="auth-body">
+    <div class="auth-background" aria-hidden="true">
+        <span class="auth-blob blob-one"></span><span class="auth-blob blob-two"></span><span class="auth-blob blob-three"></span>
+        <span class="particle particle-1"></span><span class="particle particle-2"></span><span class="particle particle-3"></span><span class="particle particle-4"></span><span class="particle particle-5"></span><span class="particle particle-6"></span>
+    </div>
+    <main class="auth-shell page-enter" aria-label="SocialHub authentication">
+        <section class="auth-art" aria-label="SocialHub creator community preview">
+            <div class="auth-art-topbar">
+                <a class="brand" href="/" aria-label="SocialHub home"><span class="brand-mark"><i class="fas fa-bolt"></i></span><span>SocialHub</span></a>
+            </div>
+            <div class="visual-collage" aria-hidden="true">
+                <div class="collage-tile tile-a"></div><div class="collage-tile tile-b"></div><div class="collage-tile tile-c"></div><div class="collage-tile tile-d"></div>
+                <div class="story-rail glass-panel"><span class="story-ring"><b>AR</b></span><span class="story-ring"><b>MK</b></span><span class="story-ring live-story"><b>TV</b></span><span class="story-ring"><b>JS</b></span></div>
+                <article class="float-card profile-card glass-panel"><span class="profile-avatar">N</span><div><strong>Nora Ray <i class="fas fa-circle-check verified"></i></strong><small>Visual creator</small></div><button type="button">Follow</button></article>
+                <article class="float-card reel-preview glass-panel"><span class="live-badge"><i class="fas fa-circle"></i> Live</span><i class="fas fa-play"></i><strong>2.4M</strong><small>Reel views</small></article>
+                <div class="float-card notification-pop glass-panel"><i class="fas fa-heart"></i><span><b>+18.7K likes</b><small>Your story is taking off</small></span></div>
+                <div class="float-card chat-preview glass-panel"><i class="fas fa-comment-dots"></i><span><b>Maya</b><small>Love your new post 🔥</small></span></div>
+                <div class="float-card analytics-pop glass-panel"><span>Followers</span><b>12.8M</b><small><i class="fas fa-arrow-trend-up"></i> 24% today</small></div>
+            </div>
+            <div class="auth-hero-copy">
+                <h1>Connect,<br>Create,<br><span>Grow Together</span></h1>
+                <p>Join millions of creators and communities sharing photos, reels, stories and inspiration every day.</p>
+            </div>
+            <div class="feature-list" aria-label="SocialHub features">
+                <div><i class="fas fa-users"></i><span><b>Build Your Community</b><small>Connect with people who share your passion</small></span></div>
+                <div><i class="fas fa-wand-magic-sparkles"></i><span><b>Create &amp; Share</b><small>Post, reel, live stream and express your creativity</small></span></div>
+                <div><i class="fas fa-chart-line"></i><span><b>Grow &amp; Analyze</b><small>Powerful analytics and insights to grow your audience</small></span></div>
+                <div><i class="fas fa-wallet"></i><span><b>Secure &amp; Reliable</b><small>Your data, content and privacy always protected</small></span></div>
+            </div>
+            <div class="creator-proof"><div class="avatar-stack" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div><p>Join 10M+ creators<br>on SocialHub</p></div>
+        </section>
+        <section class="auth-panel">
+            <div class="auth-actions" aria-label="Login page actions">
+                <button class="theme-toggle auth-icon-button" type="button" aria-label="Toggle theme"><i class="far fa-moon"></i></button>
+                <a class="auth-icon-button help-button" href="/contact" aria-label="Open help"><i class="far fa-circle-question"></i><span>Help</span></a>
+            </div>
+            {% block content %}{% endblock %}
+        </section>
+    </main>
+    <footer class="auth-footer"><span>© 2025 SocialHub</span><a href="/privacy">Privacy Policy</a><i aria-hidden="true">•</i><a href="/terms">Terms of Service</a><i aria-hidden="true">•</i><a href="/contact">Contact Us</a></footer>
+    {% include 'partials/toast_container.html' %}
+    <script src="/static/js/app.js" defer></script>
+    <script src="/static/js/ui-refresh.js" defer></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "SocialHub",
+  "short_name": "SocialHub",
+  "description": "Premium creator-first social media dashboard",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#09090f",
+  "theme_color": "#ff4ecd",
+  "categories": ["social", "photo", "productivity"],
+  "icons": [
+    {
+      "src": "/static/images/default_avatar.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    { "name": "Create Post", "short_name": "Create", "url": "/?action=create" },
+    { "name": "Reels", "short_name": "Reels", "url": "/reels" },
+    { "name": "Messages", "short_name": "Chat", "url": "/chat" }
+  ]
+}

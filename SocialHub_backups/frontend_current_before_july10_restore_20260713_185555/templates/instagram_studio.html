@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Instagram Growth Studio - SocialHub</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .ig-studio-page { padding: 80px 16px 40px; max-width: 1200px; margin: 0 auto; }
+        .ig-studio-header { text-align: center; margin-bottom: 32px; }
+        .ig-studio-header h1 { font-size: 2rem; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .ig-studio-header p { color: var(--text-secondary); margin-top: 8px; }
+        .ig-studio-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+        @media (min-width: 768px) { .ig-studio-grid { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 1024px) { .ig-studio-grid { grid-template-columns: 1fr 1fr 1fr; } }
+        .ig-gradient-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; transition: all var(--transition-normal); position: relative; overflow: hidden; }
+        .ig-gradient-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gradient); opacity: 0; transition: opacity var(--transition-normal); }
+        .ig-gradient-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+        .ig-gradient-card:hover::before { opacity: 1; }
+        .ig-gradient-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; color: var(--text); }
+        .ig-gradient-card h3 i { color: var(--primary); }
+        .ig-metric-card { background: var(--bg-glass); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 20px; text-align: center; transition: all var(--transition-normal); }
+        .ig-metric-card:hover { background: var(--bg-glass-hover); transform: translateY(-2px); }
+        .ig-metric-card .metric-value { font-size: 1.8rem; font-weight: 700; margin: 8px 0; }
+        .ig-metric-card .metric-label { font-size: var(--font-size-sm); color: var(--text-secondary); }
+        .ig-metric-card .metric-change { font-size: var(--font-size-xs); color: var(--text-muted); margin-top: 4px; }
+        .ig-top-posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+        .ig-top-posts-grid .ig-post-thumb { aspect-ratio: 1; border-radius: var(--radius-sm); overflow: hidden; position: relative; cursor: pointer; }
+        .ig-top-posts-grid .ig-post-thumb img, .ig-top-posts-grid .ig-post-thumb video { width: 100%; height: 100%; object-fit: cover; }
+        .ig-top-posts-grid .ig-post-thumb .ig-post-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity var(--transition-fast); gap: 16px; color: white; font-size: var(--font-size-sm); }
+        .ig-top-posts-grid .ig-post-thumb:hover .ig-post-overlay { opacity: 1; }
+        .ig-studio-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+        .ig-status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: var(--font-size-sm); font-weight: 500; }
+        .ig-status-badge.connected { background: rgba(0, 210, 106, 0.15); color: var(--success); }
+        .ig-status-badge.disconnected { background: rgba(237, 73, 86, 0.15); color: var(--danger); }
+        .ig-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border: none; border-radius: var(--radius-md); font-weight: 500; font-size: var(--font-size-sm); cursor: pointer; transition: all var(--transition-fast); }
+        .ig-btn:hover { transform: translateY(-1px); }
+        .ig-btn-primary { background: var(--gradient); color: white; }
+        .ig-btn-secondary { background: var(--bg-glass-strong); color: var(--text); border: 1px solid var(--border); }
+        .ig-btn-success { background: var(--success); color: white; }
+        .ig-btn-danger { background: var(--danger); color: white; }
+        .ig-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .ig-form-group { margin-bottom: 12px; }
+        .ig-form-group label { display: block; font-size: var(--font-size-sm); font-weight: 500; margin-bottom: 4px; color: var(--text-secondary); }
+        .ig-form-group input, .ig-form-group textarea, .ig-form-group select { width: 100%; padding: 10px 12px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-family: inherit; font-size: var(--font-size-base); transition: border-color var(--transition-fast); }
+        .ig-form-group input:focus, .ig-form-group textarea:focus, .ig-form-group select:focus { outline: none; border-color: var(--primary); }
+        .ig-form-group textarea { resize: vertical; min-height: 80px; }
+        .ig-loading-dots::after { content: ''; animation: dots 1.5s steps(4, end) infinite; }
+        @keyframes dots { 0%, 20% { content: ''; } 40% { content: '.'; } 60% { content: '..'; } 80%, 100% { content: '...'; } }
+        .sync-log-item { padding: 12px; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; font-size: var(--font-size-sm); }
+        .sync-log-item:last-child { border-bottom: none; }
+        .sync-log-status { padding: 2px 8px; border-radius: 10px; font-size: var(--font-size-xs); font-weight: 500; }
+        .sync-log-status.completed { background: rgba(0, 210, 106, 0.15); color: var(--success); }
+        .sync-log-status.failed { background: rgba(237, 73, 86, 0.15); color: var(--danger); }
+        .suggestion-item-caption { padding: 12px; margin-bottom: 8px; background: var(--bg-glass); border-radius: var(--radius-sm); border: 1px solid var(--border-light); cursor: pointer; transition: all var(--transition-fast); font-size: var(--font-size-sm); line-height: 1.5; }
+        .suggestion-item-caption:hover { border-color: var(--primary); background: var(--bg-glass-hover); }
+        .ig-empty-state { text-align: center; padding: 40px 20px; color: var(--text-secondary); }
+        .ig-empty-state i { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.5; }
+        .ig-loading-skeleton { background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-glass-strong) 50%, var(--bg-card) 75%); background-size: 200% 100%; animation: shimmer 1.5s ease-in-out infinite; border-radius: var(--radius-md); height: 200px; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        .ig-metrics-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .ig-full-width { grid-column: 1 / -1; }
+        @media (max-width: 767px) { .ig-studio-page { padding: 70px 12px 30px; } .ig-studio-header h1 { font-size: 1.5rem; } .ig-metrics-row { grid-template-columns: repeat(2, 1fr); } .ig-top-posts-grid { grid-template-columns: repeat(3, 1fr); } }
+        .ig-caption-copy-btn { float: right; background: none; border: none; color: var(--blue); cursor: pointer; font-size: var(--font-size-xs); padding: 2px 6px; }
+        .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--bg-card); border: 1px solid var(--border); padding: 12px 24px; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); z-index: 10000; font-size: var(--font-size-sm); animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { transform: translateX(-50%) translateY(20px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
+    </style>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#e1306c">
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="nav-inner">
+            <a href="/" class="logo">Social<span>Hub</span></a>
+            <div class="nav-links" id="nav-links"></div>
+            <button class="mobile-menu-btn" onclick="document.getElementById('nav-links').classList.toggle('active')">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="ig-studio-page">
+        <div class="ig-studio-header">
+            <h1><i class="fas fa-chart-line"></i> Instagram Growth Studio</h1>
+            <p>Professional creator dashboard — analytics, import, scheduling, and caption assistant</p>
+        </div>
+
+        <!-- Connection Status -->
+        <div class="ig-gradient-card" id="ig-status-card">
+            <h3><i class="fas fa-plug"></i> Instagram Connection</h3>
+            <div id="ig-status-content">
+                <div class="ig-loading-skeleton" style="height:60px"></div>
+            </div>
+            <div class="ig-studio-actions">
+                <button class="ig-btn ig-btn-primary" onclick="checkInstagramStatus()">
+                    <i class="fas fa-sync"></i> Check Connection
+                </button>
+                <button class="ig-btn ig-btn-secondary" onclick="importInstagramPosts()">
+                    <i class="fas fa-download"></i> Import Posts
+                </button>
+                <button class="ig-btn ig-btn-success" onclick="syncInstagramAll()">
+                    <i class="fas fa-cloud-sun"></i> Sync All
+                </button>
+                <button class="ig-btn ig-btn-secondary" onclick="loadInstagramDashboard()">
+                    <i class="fas fa-chart-bar"></i> Open Analytics
+                </button>
+            </div>
+        </div>
+
+        <!-- Analytics Dashboard -->
+        <div id="ig-dashboard-section" style="display:none">
+            <div class="ig-metrics-row" id="ig-metrics-container"></div>
+            
+            <div class="ig-gradient-card">
+                <h3><i class="fas fa-fire"></i> Top Posts</h3>
+                <div class="ig-top-posts-grid" id="ig-top-posts"></div>
+            </div>
+        </div>
+
+        <!-- Full width grid for tools -->
+        <div class="ig-studio-grid" style="margin-top:24px">
+            <!-- Caption Assistant -->
+            <div class="ig-gradient-card caption-assistant-card">
+                <h3><i class="fas fa-pen-fancy"></i> Caption Assistant</h3>
+                <p style="color:var(--text-secondary);font-size:var(--font-size-sm);margin-bottom:12px">
+                    Generate creative caption ideas for your posts
+                </p>
+                <div class="ig-form-group">
+                    <label>Topic *</label>
+                    <input type="text" id="caption-topic" placeholder="e.g. sunset photography, fitness motivation" required>
+                </div>
+                <div class="ig-form-group">
+                    <label>Tone</label>
+                    <select id="caption-tone">
+                        <option value="professional">Professional</option>
+                        <option value="casual">Casual</option>
+                        <option value="inspirational">Inspirational</option>
+                        <option value="funny">Funny</option>
+                        <option value="educational">Educational</option>
+                    </select>
+                </div>
+                <div class="ig-form-group">
+                    <label>Keywords (optional, comma separated)</label>
+                    <input type="text" id="caption-keywords" placeholder="e.g. travel, nature, adventure">
+                </div>
+                <button class="ig-btn ig-btn-primary" onclick="generateCaptionIdeas()">
+                    <i class="fas fa-magic"></i> Generate Captions
+                </button>
+                <div id="caption-results" style="margin-top:12px"></div>
+            </div>
+
+            <!-- Schedule Post -->
+            <div class="ig-gradient-card schedule-post-card">
+                <h3><i class="fas fa-calendar-alt"></i> Schedule Post</h3>
+                <p style="color:var(--text-secondary);font-size:var(--font-size-sm);margin-bottom:12px">
+                    Plan and schedule content for future publishing
+                </p>
+                <div class="ig-form-group">
+                    <label>Content *</label>
+                    <textarea id="schedule-content" placeholder="Write your post content..." required></textarea>
+                </div>
+                <div class="ig-form-group">
+                    <label>Schedule Date & Time *</label>
+                    <input type="datetime-local" id="schedule-datetime" required>
+                </div>
+                <div class="ig-form-group">
+                    <label>Hashtags (comma separated)</label>
+                    <input type="text" id="schedule-hashtags" placeholder="e.g. socialhub, photography, creative">
+                </div>
+                <button class="ig-btn ig-btn-success" onclick="scheduleInstagramPost()">
+                    <i class="fas fa-clock"></i> Schedule Post
+                </button>
+                <div id="scheduled-posts-list" style="margin-top:12px"></div>
+            </div>
+
+            <!-- Sync Log -->
+            <div class="ig-gradient-card sync-log-card">
+                <h3><i class="fas fa-history"></i> Sync History</h3>
+                <p style="color:var(--text-secondary);font-size:var(--font-size-sm);margin-bottom:12px">
+                    Recent Instagram import and sync activity
+                </p>
+                <div id="sync-log-content">
+                    <div class="ig-loading-skeleton" style="height:120px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        // Instagram Growth Studio initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof isLoggedIn === 'function' && isLoggedIn()) {
+                loadInstagramStudio();
+            }
+        });
+
+        async function loadInstagramStudio() {
+            try {
+                await checkInstagramStatus();
+                await loadInstagramDashboard();
+                await loadSyncLogs();
+                await loadScheduledPosts();
+            } catch (e) {
+                console.error('Instagram Studio load error:', e);
+            }
+        }
+
+        async function checkInstagramStatus() {
+            const container = document.getElementById('ig-status-content');
+            if (!container) return;
+            container.innerHTML = '<div class="ig-loading-skeleton" style="height:60px"></div>';
+            try {
+                const data = await api('/instagram/status');
+                if (data.connected) {
+                    container.innerHTML = `
+                        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+                            <span class="ig-status-badge connected"><i class="fas fa-check-circle"></i> Connected</span>
+                            <span><strong>@${escapeHtml(data.username || '')}</strong></span>
+                            <span style="color:var(--text-secondary);font-size:var(--font-size-sm)">
+                                ${data.account_type || 'Business'} • ${data.media_count || 0} media
+                            </span>
+                            <span style="color:var(--text-secondary);font-size:var(--font-size-xs)">${escapeHtml(data.message)}</span>
+                        </div>`;
+                } else {
+                    container.innerHTML = `
+                        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+                            <span class="ig-status-badge disconnected"><i class="fas fa-times-circle"></i> Not Connected</span>
+                            <span style="color:var(--text-muted);font-size:var(--font-size-sm)">${escapeHtml(data.message)}</span>
+                        </div>`;
+                }
+            } catch (e) {
+                container.innerHTML = `<span class="ig-status-badge disconnected"><i class="fas fa-exclamation-triangle"></i> Error: ${escapeHtml(e.message)}</span>`;
+            }
+        }
+
+        async function loadInstagramDashboard() {
+            const section = document.getElementById('ig-dashboard-section');
+            const metricsContainer = document.getElementById('ig-metrics-container');
+            const topPosts = document.getElementById('ig-top-posts');
+            if (!section) return;
+
+            section.style.display = 'block';
+            if (metricsContainer) {
+                metricsContainer.innerHTML = Array(6).fill(0).map(() => 
+                    '<div class="ig-metric-card"><div class="ig-loading-skeleton" style="height:80px"></div></div>'
+                ).join('');
+            }
+            if (topPosts) {
+                topPosts.innerHTML = Array(6).fill(0).map(() => 
+                    '<div class="ig-loading-skeleton" style="height:150px"></div>'
+                ).join('');
+            }
+
+            try {
+                const data = await api('/instagram/dashboard');
+                
+                if (metricsContainer && data.metrics) {
+                    metricsContainer.innerHTML = data.metrics.map(m => `
+                        <div class="ig-metric-card">
+                            <i class="fas fa-${m.icon}" style="color:${m.color || 'var(--primary)'};font-size:1.2rem"></i>
+                            <div class="metric-value" style="color:${m.color || 'var(--text)'}">${m.value}</div>
+                            <div class="metric-label">${escapeHtml(m.label)}</div>
+                            <div class="metric-change">${escapeHtml(m.change || '')}</div>
+                        </div>
+                    `).join('');
+                }
+
+                if (topPosts && data.recent_posts) {
+                    if (data.recent_posts.length === 0) {
+                        topPosts.innerHTML = '<div class="ig-empty-state"><i class="fas fa-images"></i><p>No posts yet</p></div>';
+                    } else {
+                        topPosts.innerHTML = data.recent_posts.map(p => {
+                            const imgSrc = p.image_url ? getMediaUrl(p.image_url) : '/static/images/default-avatar.png';
+                            return `<div class="ig-post-thumb">
+                                <img src="${imgSrc}" alt="" loading="lazy" onerror="this.src='/static/images/default-avatar.png'">
+                                <div class="ig-post-overlay">
+                                    <span><i class="fas fa-heart"></i> ${p.likes_count}</span>
+                                    <span><i class="fas fa-comment"></i> ${p.comments_count}</span>
+                                </div>
+                            </div>`;
+                        }).join('');
+                    }
+                }
+            } catch (e) {
+                if (metricsContainer) {
+                    metricsContainer.innerHTML = `<div class="ig-empty-state ig-full-width"><i class="fas fa-exclamation-circle"></i><p>Failed to load analytics: ${escapeHtml(e.message)}</p></div>`;
+                }
+            }
+        }
+
+        async function importInstagramPosts() {
+            const btn = event?.target || document.querySelector('button[onclick="importInstagramPosts()"]');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Importing...';
+            }
+            try {
+                const data = await api('/instagram/import/posts?limit=25', { method: 'POST' });
+                showToast(data.message || 'Import completed!');
+                await checkInstagramStatus();
+                await loadInstagramDashboard();
+                await loadSyncLogs();
+            } catch (e) {
+                showToast('Import failed: ' + e.message);
+            }
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-download"></i> Import Posts';
+            }
+        }
+
+        async function syncInstagramAll() {
+            const btn = event?.target || document.querySelector('button[onclick="syncInstagramAll()"]');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing...';
+            }
+            try {
+                const data = await api('/instagram/sync/all?limit=25', { method: 'POST' });
+                showToast(data.message || 'Sync completed!');
+                await checkInstagramStatus();
+                await loadInstagramDashboard();
+                await loadSyncLogs();
+            } catch (e) {
+                showToast('Sync failed: ' + e.message);
+            }
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-cloud-sun"></i> Sync All';
+            }
+        }
+
+        async function generateCaptionIdeas() {
+            const topic = document.getElementById('caption-topic')?.value;
+            if (!topic || topic.trim().length < 2) {
+                showToast('Please enter a topic');
+                return;
+            }
+            const tone = document.getElementById('caption-tone')?.value || 'professional';
+            const keywords = document.getElementById('caption-keywords')?.value || '';
+            const resultsContainer = document.getElementById('caption-results');
+            if (resultsContainer) {
+                resultsContainer.innerHTML = '<p style="color:var(--text-secondary)"><i class="fas fa-spinner fa-spin"></i> Generating ideas...</p>';
+            }
+            try {
+                const data = await api('/instagram/caption-assistant', {
+                    method: 'POST',
+                    body: JSON.stringify({ topic: topic.trim(), tone, keywords: keywords.trim() || null, emoji: true })
+                });
+                if (resultsContainer && data.suggestions) {
+                    resultsContainer.innerHTML = data.suggestions.map((s, i) => `
+                        <div class="suggestion-item-caption" onclick="copyCaption(this)">
+                            <button class="ig-caption-copy-btn" onclick="event.stopPropagation();copyCaption(this.parentElement)"><i class="fas fa-copy"></i> Copy</button>
+                            <div style="white-space:pre-wrap">${escapeHtml(s.text)}</div>
+                            <div style="color:var(--text-muted);font-size:var(--font-size-xs);margin-top:4px">Tone: ${escapeHtml(s.tone)}</div>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) {
+                if (resultsContainer) {
+                    resultsContainer.innerHTML = `<p style="color:var(--danger)">Error: ${escapeHtml(e.message)}</p>`;
+                }
+            }
+        }
+
+        function copyCaption(element) {
+            const text = element.querySelector('div')?.innerText || element.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Caption copied to clipboard!');
+            }).catch(() => {
+                // Fallback
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showToast('Caption copied!');
+            });
+        }
+
+        async function scheduleInstagramPost() {
+            const content = document.getElementById('schedule-content')?.value;
+            const datetime = document.getElementById('schedule-datetime')?.value;
+            const hashtagsInput = document.getElementById('schedule-hashtags')?.value || '';
+
+            if (!content || !datetime) {
+                showToast('Please fill in content and date/time');
+                return;
+            }
+
+            const scheduledAt = new Date(datetime);
+            if (scheduledAt <= new Date()) {
+                showToast('Schedule time must be in the future');
+                return;
+            }
+
+            const hashtags = hashtagsInput.split(',').map(h => h.trim()).filter(Boolean);
+
+            const btn = event?.target || document.querySelector('button[onclick="scheduleInstagramPost()"]');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scheduling...';
+            }
+            try {
+                const data = await api('/instagram/schedule', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        content,
+                        scheduled_at: scheduledAt.toISOString(),
+                        hashtags: hashtags.length ? hashtags : null,
+                        platform: 'socialhub'
+                    })
+                });
+                showToast('Post scheduled successfully!');
+                document.getElementById('schedule-content').value = '';
+                document.getElementById('schedule-datetime').value = '';
+                document.getElementById('schedule-hashtags').value = '';
+                await loadScheduledPosts();
+            } catch (e) {
+                showToast('Failed to schedule: ' + e.message);
+            }
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-clock"></i> Schedule Post';
+            }
+        }
+
+        async function loadScheduledPosts() {
+            const container = document.getElementById('scheduled-posts-list');
+            if (!container) return;
+            try {
+                const data = await api('/instagram/scheduled');
+                if (data.length === 0) {
+                    container.innerHTML = '<p style="color:var(--text-muted);font-size:var(--font-size-sm);text-align:center;padding:16px">No scheduled posts</p>';
+                } else {
+                    container.innerHTML = '<div style="font-weight:600;margin-bottom:8px;font-size:var(--font-size-sm)">Scheduled Posts</div>' +
+                        data.map(p => `
+                            <div class="sync-log-item">
+                                <div>
+                                    <div style="font-size:var(--font-size-xs)">${escapeHtml((p.content || '').substring(0, 60))}${(p.content || '').length > 60 ? '...' : ''}</div>
+                                    <div style="color:var(--text-muted);font-size:var(--font-size-xs)">${new Date(p.scheduled_at).toLocaleString()}</div>
+                                </div>
+                                <span class="sync-log-status ${p.status}">${escapeHtml(p.status)}</span>
+                            </div>
+                        `).join('');
+                }
+            } catch (e) {
+                container.innerHTML = '<p style="color:var(--text-muted);font-size:var(--font-size-sm)">Failed to load scheduled posts</p>';
+            }
+        }
+
+        async function loadSyncLogs() {
+            const container = document.getElementById('sync-log-content');
+            if (!container) return;
+            try {
+                const data = await api('/instagram/sync-logs?limit=10');
+                if (data.length === 0) {
+                    container.innerHTML = '<div class="ig-empty-state"><i class="fas fa-history"></i><p>No sync history yet</p></div>';
+                } else {
+                    container.innerHTML = data.map(log => `
+                        <div class="sync-log-item">
+                            <div>
+                                <div><strong>${escapeHtml(log.sync_type)}</strong> sync</div>
+                                <div style="color:var(--text-muted);font-size:var(--font-size-xs)">
+                                    ${log.posts_imported} posts imported • ${new Date(log.started_at).toLocaleString()}
+                                </div>
+                            </div>
+                            <span class="sync-log-status ${log.status}">${escapeHtml(log.status)}</span>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) {
+                container.innerHTML = '<div class="ig-empty-state"><i class="fas fa-exclamation-circle"></i><p>Failed to load sync history</p></div>';
+            }
+        }
+
+        function showToast(message) {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Re-define escapeHtml if not already defined (from app.js)
+        if (typeof escapeHtml !== 'function') {
+            function escapeHtml(t) {
+                if (!t) return '';
+                return String(t).replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>').replace(/"/g, '"');
+            }
+        }
+
+        // Re-define getMediaUrl if not already defined (from app.js)
+        if (typeof getMediaUrl !== 'function') {
+            function getMediaUrl(path) {
+                if (!path || path === 'undefined' || path === 'null') return '/static/images/default-avatar.png';
+                if (path.startsWith('http')) return path;
+                if (path.startsWith('/uploads/')) return path;
+                if (path.startsWith('uploads/')) return '/' + path;
+                return '/uploads/' + path;
+            }
+        }
+    </script>
+    <script src="/static/js/animations.js"></script>
+</body>
+</html>

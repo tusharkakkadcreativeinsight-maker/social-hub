@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Admin - SocialHub{% endblock %}
+{% block page_name %}admin{% endblock %}
+{% block content %}
+<header class="page-hero"><h1 class="page-title">Admin Control Center</h1><p class="page-subtitle">Manage users, posts, reels, stories, reports, verification, payouts, marketplace and audit logs.</p></header><section id="admin-dashboard" class="metric-grid">{% for m in ['Users','Posts','Reports','Payouts'] %}<div class="metric-card"><span class="chip">Live</span><h2>--</h2><p>{{ m }}</p></div>{% endfor %}</section><section class="section-card"><div class="card-title-row"><h2>Moderation Queue</h2><input class="form-control" placeholder="Search admin records"></div><div class="content-grid">{% for r in ['User report','Verification','Payout','Marketplace'] %}<div class="notification-item"><strong>{{ r }}</strong><span class="muted">Pending item</span><button class="btn btn-sm btn-primary">Review</button></div>{% endfor %}</div></section>
+{% endblock %}

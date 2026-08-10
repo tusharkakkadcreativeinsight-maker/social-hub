@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stories - SocialHub</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#e1306c">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo"><i class="fas fa-camera-retro"></i> Social<span>Hub</span></a>
+        <div class="nav-links" id="nav-links"></div>
+    </nav>
+    <div class="container fade-in">
+        <form id="story-upload-form" class="card slide-up" style="margin-bottom:16px">
+            <h3 style="margin-bottom:12px">Create Story</h3>
+            <div class="form-group">
+                <input type="file" id="story-file" accept="image/*,video/*" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="story-caption" placeholder="Caption (optional)">
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Upload Story</button>
+        </form>
+        <div class="stories-card slide-up" id="stories-container">
+            <div class="loading"><div class="spinner"></div></div>
+        </div>
+    </div>
+    <div class="story-viewer" id="story-viewer"></div>
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/animations.js"></script>
+</body>
+</html>

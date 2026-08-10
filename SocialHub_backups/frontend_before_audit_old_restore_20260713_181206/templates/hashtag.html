@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Hashtag - SocialHub{% endblock %}
+{% block page_name %}hashtag{% endblock %}
+{% block content %}
+<header class="page-hero"><p class="gradient-text"><b>SocialHub</b></p><h1 class="page-title"><i class="fas fa-hashtag"></i> Hashtag</h1><p class="page-subtitle">Explore hashtag posts, reels, trend score and related tags.</p><div class="hero-actions"><button class="btn btn-primary" data-action="refresh-page"><i class="fas fa-rotate"></i>Refresh</button><button class="btn btn-secondary" data-action="open-modal" data-target="create-post-modal"><i class="fas fa-plus"></i>Create</button></div></header><section id="hashtag-root" class="content-grid" data-tag="{{ tag or '' }}"><div class="skeleton-list"></div></section>
+{% endblock %}

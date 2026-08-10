@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}Search - SocialHub{% endblock %}
+{% block page_name %}search{% endblock %}
+{% block content %}
+<section class="page-hero"><h1 class="page-title">Search SocialHub</h1><label class="sr-only" for="search-input">Search</label><input id="search-input" class="form-control" placeholder="Search users, posts, reels, hashtags, music..."><div class="tabs"><button class="tab active" data-search-tab="top">Top</button><button class="tab" data-search-tab="users">Users</button><button class="tab" data-search-tab="posts">Posts</button><button class="tab" data-search-tab="reels">Reels</button><button class="tab" data-search-tab="hashtags">Tags</button></div></section><section id="search-results" class="search-results"><div class="empty-state"><i class="fas fa-search"></i><p>Start typing to search.</p></div></section>
+{% endblock %}

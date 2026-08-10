@@ -1,0 +1,47 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Python / virtualenv
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Databases and runtime state
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+*.log
+
+# Uploaded/generated media - keep folder structure only
+frontend/uploads/**
+!frontend/uploads/
+!frontend/uploads/.gitkeep
+!frontend/uploads/posts/
+!frontend/uploads/posts/.gitkeep
+!frontend/uploads/reels/
+!frontend/uploads/reels/.gitkeep
+!frontend/uploads/stories/
+!frontend/uploads/stories/.gitkeep
+!frontend/uploads/profiles/
+!frontend/uploads/profiles/.gitkeep
+!frontend/uploads/covers/
+!frontend/uploads/covers/.gitkeep
+!frontend/uploads/chat_files/
+!frontend/uploads/chat_files/.gitkeep
+!frontend/uploads/marketplace/
+!frontend/uploads/marketplace/.gitkeep
+!frontend/uploads/original_media/
+!frontend/uploads/original_media/.gitkeep
+backend/frontend/uploads/**
+
+# Tool caches / editor files
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.vscode/

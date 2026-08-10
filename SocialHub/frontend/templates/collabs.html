@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Collaborations - SocialHub{% endblock %}
+{% block page_class %}collabs{% endblock %}
+{% block content %}
+<section class="content-stack"><div class="page-header"><div><h1>Collaborations</h1><p>Find and publish creator campaigns.</p></div><button class="btn btn-primary" onclick="openModal('collab-modal')"><i class="fas fa-plus"></i> New collab</button></div><section id="collabs-grid" class="collab-grid"></section><div class="modal-overlay" id="collab-modal"><div class="modal"><div class="modal-header"><h2>New Collaboration</h2><button class="modal-close" onclick="closeModal('collab-modal')">&times;</button></div><form onsubmit="createCollabFromPage(event)" class="stack"><input id="collab-title" class="form-control" placeholder="Title" required><input id="collab-budget" class="form-control" placeholder="Budget"><input id="collab-category" class="form-control" placeholder="Category"><textarea id="collab-description" class="form-control" placeholder="Description" required></textarea><button class="btn btn-primary btn-block">Post offer</button></form></div></div></section>
+{% endblock %}

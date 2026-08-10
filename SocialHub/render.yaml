@@ -1,0 +1,36 @@
+services:
+  # Single Python Web Service - FastAPI serves both API and frontend templates
+  - type: web
+    name: socialhub-api
+    runtime: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_URL_ASYNC
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "false"
+      - key: AUTO_CREATE_TABLES
+        value: "false"
+      - key: AUTO_SCHEMA_COMPATIBILITY
+        value: "false"
+      - key: CORS_ORIGINS
+        value: https://socialhub-api.onrender.com
+      - key: APP_URL
+        value: https://socialhub-api.onrender.com
+      - key: EMAIL_VERIFICATION_REQUIRED
+        value: "false"
+      - key: SEED_DEMO_ACCOUNTS
+        value: "false"
+      - key: TWO_FACTOR_ENABLED
+        value: "false"
+    disk:
+      name: uploads
+      mountPath: /opt/render/project/src/frontend/uploads
+      sizeGB: 1

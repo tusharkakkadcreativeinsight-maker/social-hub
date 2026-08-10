@@ -1,0 +1,327 @@
+/* SocialHub advanced animation and responsive UI layer */
+:root {
+    --surface: var(--bg-card, #ffffff);
+    --surface-soft: var(--bg-secondary, #f6f7fb);
+    --app-bg: var(--bg, #fafafa);
+    --app-text: var(--text, #111827);
+    --app-muted: var(--text-secondary, #6b7280);
+    --app-border: var(--border, #e5e7eb);
+    --brand-gradient: var(--gradient, linear-gradient(135deg,#f09433,#dc2743,#bc1888));
+    --anim-fast: 180ms cubic-bezier(.2,.8,.2,1);
+    --anim: 320ms cubic-bezier(.2,.8,.2,1);
+}
+
+html[data-theme="light"], body.light-mode {
+    --bg: #f7f8fc;
+    --bg-secondary: #ffffff;
+    --bg-card: #ffffff;
+    --text: #111827;
+    --text-secondary: #667085;
+    --border: #e7eaf0;
+    --navbar-bg: rgba(255,255,255,.88);
+    color-scheme: light;
+}
+
+html[data-theme="dark"], body.dark-mode {
+    --bg: #09090f;
+    --bg-secondary: #11111b;
+    --bg-card: #181824;
+    --text: #f8fafc;
+    --text-secondary: #a1a1aa;
+    --border: #2a2a3a;
+    --navbar-bg: rgba(17,17,27,.88);
+    color-scheme: dark;
+}
+
+body {
+    transition: background var(--anim), color var(--anim);
+}
+
+.fade-in { animation: fadeIn .45s ease both; }
+.slide-up { animation: slideUp .5s ease both; }
+.scale-hover, .btn, button, .card, .post-card, .reel-card, .story-item { transition: transform var(--anim-fast), box-shadow var(--anim-fast), border-color var(--anim-fast), background var(--anim-fast); }
+.scale-hover:hover, .btn:hover, button:hover { transform: translateY(-1px) scale(1.025); }
+.btn:active, button:active { transform: scale(.96); }
+
+.btn-loading { position: relative; pointer-events: none; opacity: .82; }
+.btn-loading::after {
+    content: "";
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 8px;
+    vertical-align: -3px;
+    animation: spin .8s linear infinite;
+}
+
+.ripple { position: relative; overflow: hidden; }
+.ripple-span {
+    position: absolute;
+    border-radius: 999px;
+    transform: scale(0);
+    background: rgba(255,255,255,.38);
+    animation: ripple .58s ease-out;
+    pointer-events: none;
+}
+
+@keyframes ripple { to { transform: scale(3.2); opacity: 0; } }
+
+.skeleton {
+    min-height: 16px;
+    border-radius: 14px;
+    background: linear-gradient(90deg, rgba(128,128,128,.12), rgba(128,128,128,.25), rgba(128,128,128,.12));
+    background-size: 220% 100%;
+    animation: shimmer 1.25s infinite linear;
+}
+.skeleton-card { padding: 18px; border: 1px solid var(--border); border-radius: 20px; background: var(--bg-card); margin-bottom: 16px; }
+.skeleton-avatar { width: 48px; height: 48px; border-radius: 50%; }
+
+.toast-container { position: fixed; right: 18px; bottom: 18px; z-index: 9999; display: grid; gap: 10px; }
+.toast {
+    min-width: min(360px, calc(100vw - 32px));
+    padding: 13px 16px;
+    border-radius: 16px;
+    color: #fff;
+    background: #111827;
+    box-shadow: 0 18px 50px rgba(0,0,0,.25);
+    transform: translateY(18px) scale(.98);
+    opacity: 0;
+    animation: toastIn .25s ease forwards;
+}
+.toast.success { background: linear-gradient(135deg,#12b76a,#039855); }
+.toast.error { background: linear-gradient(135deg,#f04438,#b42318); }
+.toast.warning { background: linear-gradient(135deg,#f79009,#dc6803); }
+.toast.info { background: linear-gradient(135deg,#2e90fa,#7a5af8); }
+@keyframes toastIn { to { transform: translateY(0) scale(1); opacity: 1; } }
+
+.modal, .modal-overlay, .story-viewer { transition: opacity var(--anim), visibility var(--anim); }
+.modal .modal-content, .modal-overlay .modal, .modal-show {
+    animation: modalPop .28s cubic-bezier(.18,.89,.32,1.28) both;
+}
+@keyframes modalPop { from { opacity: 0; transform: translateY(18px) scale(.94); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+.story-ring {
+    padding: 3px;
+    border-radius: 999px;
+    background: conic-gradient(from 0deg,#f9ce34,#ee2a7b,#6228d7,#f9ce34);
+    animation: storyRing 3s linear infinite;
+}
+@keyframes storyRing { to { filter: hue-rotate(360deg); } }
+
+.heart-pop { animation: heartPop .48s cubic-bezier(.18,.89,.32,1.28); color: #ed4956 !important; }
+@keyframes heartPop { 0% { transform: scale(1); } 45% { transform: scale(1.55); } 100% { transform: scale(1); } }
+
+.pulse-online, .online-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #12b76a;
+    box-shadow: 0 0 0 rgba(18,183,106,.7);
+    animation: pulseOnline 1.6s infinite;
+}
+@keyframes pulseOnline { 70% { box-shadow: 0 0 0 10px rgba(18,183,106,0); } 100% { box-shadow: 0 0 0 0 rgba(18,183,106,0); } }
+
+.top-nav, .navbar { backdrop-filter: blur(18px); box-shadow: 0 10px 35px rgba(0,0,0,.08); }
+.nav-links a, #nav-links a, .admin-sidebar a {
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.nav-links a.active, #nav-links a.active, .admin-sidebar a.active {
+    background: rgba(225,48,108,.12);
+    color: var(--primary, #e1306c);
+}
+
+.sidebar, .admin-sidebar, .chat-sidebar { transition: width var(--anim), transform var(--anim), box-shadow var(--anim); }
+.sidebar:hover, .admin-sidebar:hover { box-shadow: 18px 0 50px rgba(0,0,0,.12); }
+
+.post-card, .card, .reel-card, .sidebar-card, .admin-card, .feature-card, .product-card, .collab-card {
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--bg-card) 92%, transparent);
+    box-shadow: 0 10px 40px rgba(0,0,0,.07);
+}
+.post-card, .reel-card, .message-bubble, .product-card, .collab-card { animation: slideUp .45s ease both; }
+.post-card:hover, .card:hover, .feature-card:hover, .product-card:hover, .collab-card:hover { transform: translateY(-3px); box-shadow: 0 20px 60px rgba(0,0,0,.13); }
+
+.comments-panel, .comment-box { max-height: 0; overflow: hidden; transition: max-height var(--anim), opacity var(--anim); opacity: 0; }
+.comments-panel.open, .comment-box.open { max-height: 520px; opacity: 1; }
+
+.story-strip { display: flex; gap: 14px; overflow-x: auto; padding: 12px 4px; scroll-snap-type: x proximity; }
+.story-item { scroll-snap-align: start; flex: 0 0 auto; }
+.story-progress { height: 3px; background: rgba(255,255,255,.25); border-radius: 99px; overflow: hidden; }
+.story-progress > span { display: block; height: 100%; background: #fff; animation: storyProgress 5s linear forwards; }
+@keyframes storyProgress { from { width: 0; } to { width: 100%; } }
+
+.reels-container { scroll-snap-type: y mandatory; }
+.reel-card, .reel-item { scroll-snap-align: start; transition: transform var(--anim), opacity var(--anim); }
+
+.profile-avatar, .profile-picture, .avatar-xl { transition: box-shadow var(--anim), transform var(--anim); }
+.profile-avatar:hover, .profile-picture:hover, .avatar-xl:hover { transform: scale(1.035); box-shadow: 0 0 0 5px rgba(225,48,108,.12), 0 0 35px rgba(225,48,108,.45); }
+.profile-tabs .active, .tab.active { position: relative; }
+.profile-tabs .active::after, .tab.active::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: -5px; height: 3px; border-radius: 99px; background: var(--brand-gradient); }
+
+.message-bubble { animation: messageIn .24s ease both; }
+@keyframes messageIn { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.typing-indicator span { display: inline-block; width: 6px; height: 6px; margin: 0 2px; border-radius: 50%; background: var(--text-secondary); animation: typingBounce 1s infinite ease-in-out; }
+.typing-indicator span:nth-child(2) { animation-delay: .15s; }
+.typing-indicator span:nth-child(3) { animation-delay: .3s; }
+@keyframes typingBounce { 50% { transform: translateY(-5px); opacity: .55; } }
+
+.mobile-bottom-nav {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    z-index: 900;
+    display: none;
+    grid-template-columns: repeat(6,1fr);
+    gap: 4px;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: var(--navbar-bg, rgba(255,255,255,.9));
+    backdrop-filter: blur(18px);
+    box-shadow: 0 12px 40px rgba(0,0,0,.18);
+}
+.mobile-bottom-nav a, .mobile-bottom-nav button { color: var(--text); display: grid; place-items: center; min-height: 38px; border: 0; background: transparent; border-radius: 14px; }
+.mobile-bottom-nav a.active { color: var(--primary); background: rgba(225,48,108,.12); }
+
+.install-app-btn { position: fixed; right: 18px; bottom: 86px; z-index: 901; display: none; }
+
+.advanced-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 16px; }
+.feature-card, .product-card, .collab-card { border-radius: 20px; padding: 18px; }
+.chart-bars { display: flex; align-items: end; gap: 12px; min-height: 180px; padding: 18px; }
+.chart-bars span { flex: 1; min-height: 8px; border-radius: 12px 12px 4px 4px; background: var(--brand-gradient); animation: slideUp .5s ease both; }
+
+@media (max-width: 768px) {
+    body { padding-bottom: 76px; }
+    .mobile-bottom-nav { display: grid; }
+    .sidebar, .admin-sidebar { transform: translateX(-110%); position: fixed; z-index: 800; }
+    .sidebar.open, .admin-sidebar.open { transform: translateX(0); }
+
+    /*
+       The home dashboard already has a compact mobile sidebar in style.css.
+       This animation layer is loaded after style.css, so the generic sidebar
+       drawer rule above was hiding the dashboard sidebar and breaking layout.
+    */
+    body.socialhub-dashboard .sidebar {
+        transform: none;
+        z-index: 1000;
+    }
+
+    body.socialhub-dashboard .mobile-bottom-nav {
+        display: none;
+    }
+
+    .container, .container-wide { width: 100% !important; padding-left: 12px !important; padding-right: 12px !important; }
+    .feed-area, .admin-layout, .chat-layout { grid-template-columns: 1fr !important; display: block !important; }
+    .post-card, .card, .reel-card { width: 100%; border-radius: 18px; }
+    .reels-container { height: calc(100vh - 76px); overflow-y: auto; }
+    .reel-card, .reel-item { min-height: calc(100vh - 92px); border-radius: 0; }
+    .chat-layout { height: calc(100vh - 150px); }
+    .chat-sidebar { max-height: 260px; overflow: auto; }
+    .toast-container { left: 12px; right: 12px; bottom: 84px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+/* ============================================================
+   GLOBAL UI CONSISTENCY POLISH
+   Keeps older pages visually aligned with the premium dashboard.
+   ============================================================ */
+body:not(.socialhub-dashboard):not(.auth-page) {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 78% 12%, rgba(147, 51, 234, 0.11), transparent 30%),
+        radial-gradient(circle at 18% 32%, rgba(14, 165, 233, 0.06), transparent 32%),
+        linear-gradient(135deg, #060a14 0%, #0a0e1b 48%, #060913 100%);
+    color: var(--text-primary, #f8fafc);
+}
+
+body:not(.socialhub-dashboard):not(.auth-page) .navbar,
+body:not(.socialhub-dashboard):not(.auth-page) .top-nav {
+    position: sticky;
+    top: 0;
+    z-index: 850;
+    background: rgba(5, 10, 22, 0.82);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.11);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+body:not(.socialhub-dashboard):not(.auth-page) .container,
+body:not(.socialhub-dashboard):not(.auth-page) .container-wide,
+body:not(.socialhub-dashboard):not(.auth-page) main {
+    width: min(1180px, calc(100% - 32px));
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body:not(.socialhub-dashboard):not(.auth-page) .container,
+body:not(.socialhub-dashboard):not(.auth-page) .container-wide {
+    padding-top: 24px;
+    padding-bottom: 40px;
+}
+
+.card,
+.post-card,
+.reel-card,
+.sidebar-card,
+.admin-card,
+.feature-card,
+.product-card,
+.collab-card,
+.settings-card,
+.notification-card,
+.chat-card,
+.profile-card,
+.data-card,
+.analytics-card,
+.marketplace-card,
+.scheduled-card,
+.story-card {
+    background: linear-gradient(145deg, rgba(22, 26, 42, 0.88), rgba(10, 14, 27, 0.92));
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 18px;
+    box-shadow: 0 12px 42px rgba(0, 0, 0, 0.24);
+}
+
+input,
+textarea,
+select {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary, #f8fafc);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--primary, #e1306c);
+    box-shadow: 0 0 0 4px rgba(225, 48, 108, 0.14);
+}
+
+a {
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    body:not(.socialhub-dashboard):not(.auth-page) .container,
+    body:not(.socialhub-dashboard):not(.auth-page) .container-wide,
+    body:not(.socialhub-dashboard):not(.auth-page) main {
+        width: min(100% - 20px, 1180px);
+    }
+}
+

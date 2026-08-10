@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - SocialHub</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#e1306c">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo"><i class="fas fa-camera-retro"></i> Social<span>Hub</span></a>
+        <div class="nav-links" id="nav-links"></div>
+    </nav>
+    <div class="container fade-in" style="max-width:640px">
+        <div class="page-header slide-up">
+            <h2 style="font-size:22px;font-weight:800">Notifications</h2>
+            <button class="mark-all-read" onclick="markAllRead()">
+                <i class="fas fa-check-double"></i> Mark all read
+            </button>
+        </div>
+        <div class="notif-filter-row slide-up" style="animation-delay:0.05s">
+            <button class="notif-filter active" data-filter="all" onclick="setNotificationFilter(this,'all')">All</button>
+            <button class="notif-filter" data-filter="unread" onclick="setNotificationFilter(this,'unread')">Unread</button>
+            <button class="notif-filter" data-filter="like" onclick="setNotificationFilter(this,'like')">Likes</button>
+            <button class="notif-filter" data-filter="comment" onclick="setNotificationFilter(this,'comment')">Comments</button>
+            <button class="notif-filter" data-filter="follow" onclick="setNotificationFilter(this,'follow')">Follows</button>
+            <button class="notif-filter" data-filter="mention" onclick="setNotificationFilter(this,'mention')">Mentions</button>
+        </div>
+        <div class="notifications-card slide-up" style="animation-delay: 0.1s">
+            <div id="notifications-container">
+                <div class="loading"><div class="spinner"></div></div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/animations.js"></script>
+</body>
+</html>

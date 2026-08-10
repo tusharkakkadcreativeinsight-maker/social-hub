@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SocialHub</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo"><i class="fas fa-users" style="-webkit-text-fill-color:#a29bfe"></i> SocialHub<span>Pro</span></a>
+        <div class="nav-links" id="nav-links"></div>
+    </nav>
+    <div class="container">
+        <div class="page-header">
+            <h2><i class="fas fa-tachometer-alt" style="color:var(--primary);margin-right:10px"></i>Admin Dashboard</h2>
+        </div>
+        <div class="admin-layout">
+            <div class="admin-sidebar">
+                <a href="/admin" class="active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="#" data-section="users"><i class="fas fa-users"></i> Users</a>
+                <a href="#" data-section="posts"><i class="fas fa-newspaper"></i> Posts</a>
+                <a href="#" data-section="reports"><i class="fas fa-flag"></i> Reports</a>
+                <a href="#" data-section="analytics"><i class="fas fa-chart-line"></i> Analytics</a>
+                <a href="#" data-section="audit"><i class="fas fa-history"></i> Audit Logs</a>
+                <a href="#" data-section="settings"><i class="fas fa-cog"></i> Settings</a>
+            </div>
+            <div class="admin-content">
+                <div class="stats-grid" id="admin-dashboard">
+                    <div class="loading"><div class="spinner"></div></div>
+                </div>
+                <div class="admin-charts">
+                    <div class="chart-card">
+                        <h3><i class="fas fa-chart-line" style="color:var(--primary);margin-right:8px"></i>User Growth</h3>
+                        <div class="chart-placeholder" id="user-growth-chart">
+                            <canvas id="growthCanvas" style="width:100%;height:100%"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3><i class="fas fa-globe" style="color:var(--success);margin-right:8px"></i>Top Countries</h3>
+                        <div class="chart-placeholder" id="countries-chart"></div>
+                    </div>
+                </div>
+                <div class="chart-card" style="margin-top:20px">
+                    <h3><i class="fas fa-flag" style="color:var(--danger);margin-right:8px"></i>Recent Reports</h3>
+                    <div id="recent-reports"><div class="loading"><div class="spinner"></div></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/app.js"></script>
+    <script>
+        // Override loadAdminDashboard
+        window.loadAdminDashboard = async function() {
+            const dash = document.getElementById('admin-dashboard');
+            if (!dash) return;
+            try {
+                const d = await api('/admin/dashboard');
+                dash.innerHTML = `
+                    <div class="stat-card users">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <h3>${d.total_users || 0}</h3>
+                        <div class="stat-label">Total Users</div>
+                        <div class="stat-change up"><i class="fas fa-arrow-up"></i> +12.8%</div>
+                    </div>
+                    <div class="stat-card posts">
+                        <div class="stat-icon"><i class="fas fa-newspaper"></i></div>
+                        <h3>${d.total_posts || 0}</h3>
+                        <div class="stat-label">Total Posts</div>
+                        <div class="stat-change up"><i class="fas fa-arrow-up"></i> +8.2%</div>
+                    </div>
+                    <div class="stat-card reports">
+                        <div class="stat-icon"><i class="fas fa-flag"></i></div>
+                        <h3>${d.total_reports || 0}</h3>
+                        <div class="stat-label">Total Reports</div>
+                        <div class="stat-change down"><i class="fas fa-arrow-down"></i> -3.4%</div>
+                    </div>
+                    <div class="stat-card active">
+                        <div class="stat-icon"><i class="fas fa-circle"></i></div>
+                        <h3>${d.active_users_today || 0}</h3>
+                        <div class="stat-label">Active Now</div>
+                        <div class="stat-change up"><i class="fas fa-arrow-up"></i> +6.7%</div>
+                    </div>`;
+                // Draw a simple growth chart
+                drawGrowthChart();
+            } catch (e) { dash.innerHTML = '<div class="empty-state"><i class="fas fa-lock fa-3x"></i><h3>Admin access required</h3><p>You need admin privileges to view this page</p></div>'; }
+        };
+        function drawGrowthChart() {
+            const canvas = document.getElementById('growthCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.parentElement.clientWidth;
+            const h = 200;
+            canvas.width = w; canvas.height = h;
+            const data = [1200, 1800, 2400, 3200, 4100, 5800, 7200, 8500, 9800, 11000, 12500, 15000];
+            const labels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            const max = Math.max(...data) * 1.1;
+            const stepX = w / (data.length - 1);
+            const padding = 40;
+            // Grid lines
+            ctx.strokeStyle = '#2a3a4a';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < 5; i++) {
+                const y = padding + (h - padding * 2) * (i / 4);
+                ctx.beginPath(); ctx.moveTo(padding, y); ctx.lineTo(w - 10, y); ctx.stroke();
+                ctx.fillStyle = '#8899aa'; ctx.font = '11px Inter, sans-serif';
+                ctx.fillText(Math.round(max * (1 - i / 4)), 0, y + 4);
+            }
+            // Labels
+            ctx.fillStyle = '#8899aa'; ctx.font = '11px Inter, sans-serif';
+            data.forEach((_, i) => {
+                ctx.fillText(labels[i], stepX * i + padding / 2, h - 10);
+            });
+            // Area
+            ctx.beginPath();
+            data.forEach((v, i) => {
+                const x = stepX * i + padding / 2;
+                const y = h - padding - (v / max) * (h - padding * 2);
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            });
+            const gradient = ctx.createLinearGradient(0, 0, 0, h);
+            gradient.addColorStop(0, 'rgba(108,92,231,0.3)');
+            gradient.addColorStop(1, 'rgba(108,92,231,0)');
+            ctx.lineTo(stepX * (data.length - 1) + padding / 2, h - padding);
+            ctx.lineTo(padding / 2, h - padding);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            // Line
+            ctx.beginPath();
+            data.forEach((v, i) => {
+                const x = stepX * i + padding / 2;
+                const y = h - padding - (v / max) * (h - padding * 2);
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            });
+            ctx.strokeStyle = '#6c5ce7';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+            // Dots
+            data.forEach((v, i) => {
+                const x = stepX * i + padding / 2;
+                const y = h - padding - (v / max) * (h - padding * 2);
+                ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2);
+                ctx.fillStyle = '#6c5ce7'; ctx.fill();
+                ctx.strokeStyle = '#1a2636'; ctx.lineWidth = 2; ctx.stroke();
+            });
+        }
+        // ==================== Admin Sidebar Navigation ====================
+        document.querySelectorAll('.admin-sidebar a[data-section]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.admin-sidebar a').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                const section = this.dataset.section;
+                // Show/hide content sections
+                document.querySelectorAll('.admin-content > div').forEach(el => el.style.display = 'none');
+                const contentMap = {
+                    'dashboard': document.querySelector('.stats-grid'),
+                    'users': document.querySelector('.admin-users-section'),
+                    'posts': document.querySelector('.admin-posts-section'),
+                    'reports': document.querySelector('#recent-reports'),
+                    'analytics': document.querySelector('.admin-charts'),
+                    'audit': document.querySelector('.admin-audit-section'),
+                    'settings': document.querySelector('.admin-settings-section')
+                };
+                // If section doesn't exist, fetch from API
+                if (!document.getElementById(`admin-${section}`) && !window[`adminSection${section}`]) {
+                    loadAdminSection(section);
+                }
+                const target = contentMap[section];
+                if (target) target.style.display = '';
+                // Update header
+                const titles = { dashboard: 'Dashboard', users: 'Users Management', posts: 'Posts Management', reports: 'Reports', analytics: 'Analytics', audit: 'Audit Logs', settings: 'Settings' };
+                document.querySelector('.page-header h2').innerHTML = `<i class="fas fa-${section === 'dashboard' ? 'tachometer-alt' : section === 'users' ? 'users' : section === 'posts' ? 'newspaper' : section === 'reports' ? 'flag' : section === 'analytics' ? 'chart-line' : section === 'audit' ? 'history' : 'cog'}" style="color:var(--primary);margin-right:10px"></i>${titles[section] || section}`;
+            });
+        });
+        window.loadAdminSection = async function(section) {
+            const content = document.querySelector('.admin-content');
+            try {
+                if (section === 'users') {
+                    const usersData = await api('/admin/users');
+                    const div = document.createElement('div'); div.id = 'admin-users'; div.className = 'admin-users-section';
+                    div.innerHTML = `<div class="chart-card"><h3><i class="fas fa-users" style="color:var(--primary);margin-right:8px"></i>All Users</h3>
+                        <table class="admin-table"><thead><tr><th>Username</th><th>Email</th><th>Role</th><th>Banned</th><th>Actions</th></tr></thead>
+                        <tbody>${(usersData.users || []).map(u => `<tr><td>${u.username}</td><td>${u.email}</td><td>${u.role}</td><td>${u.is_banned ? '<span style="color:var(--danger)">Yes</span>' : 'No'}</td>
+                        <td>${u.is_banned ? `<button class="btn btn-sm" onclick="api('/admin/users/${u.id}/unban',{method:'POST'}).then(()=>location.reload())">Unban</button>` : `<button class="btn btn-sm btn-danger" onclick="api('/admin/users/${u.id}/ban',{method:'POST'}).then(()=>location.reload())">Ban</button>`}</td></tr>`).join('')}</tbody></table></div>`;
+                    content.prepend(div);
+                } else if (section === 'reports') {
+                    const reportsData = await api('/admin/reports');
+                    const div = document.createElement('div'); div.id = 'admin-reports'; div.className = 'admin-reports-section';
+                    div.innerHTML = `<div class="chart-card"><h3><i class="fas fa-flag" style="color:var(--danger);margin-right:8px"></i>All Reports</h3>
+                        <table class="admin-table"><thead><tr><th>Reporter</th><th>Reported</th><th>Reason</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody>${(reportsData.reports || []).map(r => `<tr><td>${r.reporter?.username || 'N/A'}</td><td>${r.reported_user?.username || 'N/A'}</td><td>${r.reason}</td><td>${r.status}</td>
+                        <td>${r.status === 'pending' ? `<button class="btn btn-sm" onclick="api('/admin/reports/${r.id}/resolve',{method:'POST'}).then(()=>location.reload())">Resolve</button> <button class="btn btn-sm btn-danger" onclick="api('/admin/reports/${r.id}/dismiss',{method:'POST'}).then(()=>location.reload())">Dismiss</button>` : '—'}</td></tr>`).join('')}</tbody></table></div>`;
+                    content.prepend(div);
+                }
+            } catch(e) { console.error('Admin section load error:', e); }
+        };
+        // Load on init
+        if (typeof loadAdminDashboard === 'function') loadAdminDashboard(); else window.loadAdminDashboard();
+    </script>
+</body>
+</html>

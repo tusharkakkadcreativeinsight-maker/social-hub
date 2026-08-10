@@ -1,0 +1,55 @@
+﻿# Environment files
+.env
+backend/.env
+*.env
+!.env.example
+!.env.test.example
+
+# Database files
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+test_*.db
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Test cache
+.pytest_cache/
+htmlcov/
+.coverage
+*.coverage
+
+# Logs
+*.log
+
+# Uploads / Media
+frontend/uploads/
+uploads/
+
+# Backups
+backups/
+SocialHub_safety_backup_*/
+SocialHub_backups/
+SocialHub_backup_before_restore_*/
+*.zip
+*.7z
+*.rar
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitattributes
+.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db

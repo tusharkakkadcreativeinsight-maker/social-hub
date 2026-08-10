@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}#{{ hashtag }} - SocialHub{% endblock %}
+{% block content %}
+<div class="page-container">
+  <div class="page-header">
+    <h1>#{{ hashtag }}</h1>
+    <p class="hashtag-stats">
+      <span id="post-count">0</span> posts &middot; 
+      Trend Score: <span id="trend-score">0.0</span>
+    </p>
+  </div>
+  <div id="hashtag-content">
+    <div class="empty-state">
+      <p>No posts found for this hashtag.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

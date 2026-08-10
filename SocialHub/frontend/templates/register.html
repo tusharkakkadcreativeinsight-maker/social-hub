@@ -1,0 +1,336 @@
+{% extends "auth_base.html" %}
+{% block title %}Register - SocialHub{% endblock %}
+{% block page_name %}register{% endblock %}
+{% block content %}
+<form id="register-form" class="auth-card stack" novalidate>
+  <h1>Create account</h1>
+  <p>Join SocialHub and start creating.</p>
+  <div id="error" class="form-error hidden" role="alert" aria-live="assertive"></div>
+  <div id="field-errors"></div>
+  
+  <label for="full_name">Full name</label>
+  <input id="full_name" class="form-control" autocomplete="name" maxlength="100">
+  
+  <label for="username">Username <span class="required">*</span></label>
+  <input id="username" class="form-control" autocomplete="username" required minlength="3" maxlength="50" pattern="[a-zA-Z0-9_]+">
+  <div class="field-error" id="username-error" role="alert"></div>
+  
+  <label for="email">Email <span class="required">*</span></label>
+  <input id="email" class="form-control" type="email" autocomplete="email" required>
+  <div class="field-error" id="email-error" role="alert"></div>
+  
+  <label for="password">Password <span class="required">*</span></label>
+  <div class="password-field">
+    <input id="password" class="form-control" type="password" autocomplete="new-password" minlength="8" required>
+    <button type="button" class="toggle-password" data-target="password" aria-label="Toggle password visibility"><i class="fas fa-eye"></i></button>
+  </div>
+  <div class="password-strength" id="password-strength">
+    <div class="strength-bar" id="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+    <ul class="strength-rules">
+      <li id="rule-length"><i class="fas fa-times"></i> At least 8 characters</li>
+      <li id="rule-upper"><i class="fas fa-times"></i> One uppercase letter</li>
+      <li id="rule-lower"><i class="fas fa-times"></i> One lowercase letter</li>
+      <li id="rule-number"><i class="fas fa-times"></i> One number</li>
+    </ul>
+  </div>
+  <div class="field-error" id="password-error" role="alert"></div>
+  
+  <label for="confirm-password">Confirm password <span class="required">*</span></label>
+  <div class="password-field">
+    <input id="confirm-password" class="form-control" type="password" autocomplete="new-password" minlength="8" required>
+    <button type="button" class="toggle-password" data-target="confirm-password" aria-label="Toggle password visibility"><i class="fas fa-eye"></i></button>
+  </div>
+  <div class="field-error" id="confirm-password-error" role="alert"></div>
+  
+  <label class="checkbox-label">
+    <input type="checkbox" id="terms" required>
+    <span>I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a></span>
+  </label>
+  <div class="field-error" id="terms-error" role="alert"></div>
+  
+  <button class="btn btn-primary btn-block" type="submit" id="register-btn">
+    <span class="btn-text">Create account</span>
+    <span class="btn-loader hidden"><i class="fas fa-spinner fa-spin"></i> Creating account...</span>
+  </button>
+  
+  <div class="auth-links"><a href="/login">Already have an account?</a></div>
+</form>
+
+<style>
+.required { color: var(--danger, #ef4444); }
+.password-field { position: relative; }
+.password-field .toggle-password {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer; color: #94a3b8; padding: 4px;
+  font-size: 16px;
+}
+.password-field .toggle-password:hover { color: var(--primary, #6366f1); }
+.password-strength { margin: 8px 0 4px; }
+.strength-bar { height: 4px; background: #e5e7eb; border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
+.strength-fill { height: 100%; width: 0%; border-radius: 4px; transition: width 0.3s, background 0.3s; }
+.strength-rules { list-style: none; padding: 0; margin: 0; font-size: 13px; color: #64748b; }
+.strength-rules li { margin: 3px 0; }
+.strength-rules li .fa-check { color: #22c55e; }
+.strength-rules li .fa-times { color: #ef4444; }
+.strength-rules li.valid .fa-times { display: none; }
+.strength-rules li.valid .fa-check { display: inline; }
+.strength-rules li .fa-check { display: none; }
+.field-error { color: var(--danger, #ef4444); font-size: 13px; margin: 3px 0 0; min-height: 0; }
+.checkbox-label { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; cursor: pointer; }
+.checkbox-label input[type="checkbox"] { margin-top: 2px; width: 16px; height: 16px; }
+</style>
+
+<script>
+(function() {
+  const form = document.getElementById('register-form');
+  const errorDiv = document.getElementById('error');
+  const fieldErrors = document.getElementById('field-errors');
+  const registerBtn = document.getElementById('register-btn');
+  
+  const fullName = document.getElementById('full_name');
+  const username = document.getElementById('username');
+  const email = document.getElementById('email');
+  const password = document.getElementById('password');
+  const confirmPassword = document.getElementById('confirm-password');
+  const terms = document.getElementById('terms');
+  
+  const usernameError = document.getElementById('username-error');
+  const emailError = document.getElementById('email-error');
+  const passwordError = document.getElementById('password-error');
+  const confirmPasswordError = document.getElementById('confirm-password-error');
+  const termsError = document.getElementById('terms-error');
+  
+  // Password strength elements
+  const strengthFill = document.getElementById('strength-fill');
+  const ruleLength = document.getElementById('rule-length');
+  const ruleUpper = document.getElementById('rule-upper');
+  const ruleLower = document.getElementById('rule-lower');
+  const ruleNumber = document.getElementById('rule-number');
+  
+  // Toggle password visibility
+  document.querySelectorAll('.toggle-password').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const target = document.getElementById(this.dataset.target);
+      if (!target) return;
+      const icon = this.querySelector('i');
+      if (target.type === 'password') {
+        target.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+      } else {
+        target.type = 'password';
+        icon.className = 'fas fa-eye';
+      }
+    });
+  });
+
+  // Password strength indicator
+  function updatePasswordStrength(value) {
+    const len = value.length >= 8;
+    const upper = /[A-Z]/.test(value);
+    const lower = /[a-z]/.test(value);
+    const num = /[0-9]/.test(value);
+    
+    const checks = [len, upper, lower, num];
+    const passed = checks.filter(Boolean).length;
+    
+    const pct = (passed / 4) * 100;
+    strengthFill.style.width = pct + '%';
+    
+    if (pct === 0) strengthFill.style.background = '#e5e7eb';
+    else if (pct <= 25) strengthFill.style.background = '#ef4444';
+    else if (pct <= 50) strengthFill.style.background = '#f59e0b';
+    else if (pct <= 75) strengthFill.style.background = '#22c55e';
+    else strengthFill.style.background = '#16a34a';
+    
+    [ruleLength, ruleUpper, ruleLower, ruleNumber].forEach((el, i) => {
+      if (checks[i]) {
+        el.classList.add('valid');
+        el.querySelector('i').className = 'fas fa-check';
+      } else {
+        el.classList.remove('valid');
+        el.querySelector('i').className = 'fas fa-times';
+      }
+    });
+  }
+
+  password.addEventListener('input', function() {
+    updatePasswordStrength(this.value);
+    // Clear password error on input
+    passwordError.textContent = '';
+  });
+
+  confirmPassword.addEventListener('input', function() {
+    confirmPasswordError.textContent = '';
+  });
+
+  function clearFieldErrors() {
+    [usernameError, emailError, passwordError, confirmPasswordError, termsError].forEach(el => el.textContent = '');
+    errorDiv.classList.add('hidden');
+    fieldErrors.innerHTML = '';
+  }
+
+  function showFieldError(id, msg) {
+    const el = document.getElementById(id + '-error');
+    if (el) el.textContent = msg;
+  }
+
+  function setLoading(loading) {
+    const btnText = registerBtn.querySelector('.btn-text');
+    const btnLoader = registerBtn.querySelector('.btn-loader');
+    if (loading) {
+      btnText.classList.add('hidden');
+      btnLoader.classList.remove('hidden');
+      registerBtn.disabled = true;
+    } else {
+      btnText.classList.remove('hidden');
+      btnLoader.classList.add('hidden');
+      registerBtn.disabled = false;
+    }
+  }
+
+  // Frontend validation (same rules as backend)
+  function validateForm() {
+    let valid = true;
+    clearFieldErrors();
+
+    // Username
+    if (!username.value.trim()) {
+      showFieldError('username', 'Username is required');
+      valid = false;
+    } else if (!/^[a-zA-Z0-9_]+$/.test(username.value)) {
+      showFieldError('username', 'Username must contain only letters, numbers, and underscores');
+      valid = false;
+    } else if (username.value.length < 3) {
+      showFieldError('username', 'Username must be at least 3 characters');
+      valid = false;
+    }
+
+    // Email
+    if (!email.value.trim()) {
+      showFieldError('email', 'Email is required');
+      valid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+      showFieldError('email', 'Please enter a valid email address');
+      valid = false;
+    }
+
+    // Password
+    if (!password.value) {
+      showFieldError('password', 'Password is required');
+      valid = false;
+    } else {
+      if (password.value.length < 8) {
+        showFieldError('password', 'Password must be at least 8 characters');
+        valid = false;
+      } else if (!/[A-Z]/.test(password.value)) {
+        showFieldError('password', 'Password must contain at least one uppercase letter');
+        valid = false;
+      } else if (!/[a-z]/.test(password.value)) {
+        showFieldError('password', 'Password must contain at least one lowercase letter');
+        valid = false;
+      } else if (!/[0-9]/.test(password.value)) {
+        showFieldError('password', 'Password must contain at least one number');
+        valid = false;
+      }
+    }
+
+    // Confirm password
+    if (!confirmPassword.value) {
+      showFieldError('confirm-password', 'Please confirm your password');
+      valid = false;
+    } else if (confirmPassword.value !== password.value) {
+      showFieldError('confirm-password', 'Passwords do not match');
+      valid = false;
+    }
+
+    // Terms
+    if (!terms.checked) {
+      termsError.textContent = 'You must agree to the Terms of Service';
+      valid = false;
+    }
+
+    return valid;
+  }
+
+  // Form submit
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    if (!validateForm()) return;
+    
+    setLoading(true);
+    errorDiv.classList.add('hidden');
+    
+    try {
+      const body = {
+        full_name: fullName.value.trim(),
+        username: username.value.trim(),
+        email: email.value.trim(),
+        password: password.value
+      };
+      
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok) {
+        // Redirect to email verification page
+        window.location.href = '/verify-email';
+        return;
+      }
+      
+      // Handle errors
+      if (res.status === 422 && data.detail) {
+        // FastAPI validation errors - convert to readable messages
+        if (Array.isArray(data.detail)) {
+          data.detail.forEach(err => {
+            const field = err.loc && err.loc.length > 1 ? err.loc[err.loc.length - 1] : null;
+            const msg = err.msg || 'Validation error';
+            if (field && field !== 'body') {
+              showFieldError(field, msg);
+            } else {
+              errorDiv.textContent = msg;
+              errorDiv.classList.remove('hidden');
+            }
+          });
+        } else {
+          errorDiv.textContent = data.detail;
+          errorDiv.classList.remove('hidden');
+        }
+      } else if (res.status === 400 && data.detail) {
+        // Handle duplicate errors
+        const detail = data.detail;
+        if (detail.toLowerCase().includes('email')) {
+          showFieldError('email', detail);
+        } else if (detail.toLowerCase().includes('username')) {
+          showFieldError('username', detail);
+        } else {
+          errorDiv.textContent = detail;
+          errorDiv.classList.remove('hidden');
+        }
+      } else {
+        errorDiv.textContent = data.detail || 'Registration failed. Please try again.';
+        errorDiv.classList.remove('hidden');
+      }
+    } catch (e) {
+      errorDiv.textContent = 'Network error. Please check your connection and try again.';
+      errorDiv.classList.remove('hidden');
+    } finally {
+      setLoading(false);
+    }
+  });
+
+  // Clear field errors on input
+  [username, email, password, confirmPassword].forEach(el => {
+    el.addEventListener('input', function() {
+      const errId = this.id + '-error';
+      const errEl = document.getElementById(errId);
+      if (errEl) errEl.textContent = '';
+    });
+  });
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Notifications - SocialHub{% endblock %}
+{% block page_class %}notifications{% endblock %}
+{% block content %}
+<section class="notifications-page" id="notifications-page">
+  <div class="notifications-header">
+    <div class="notifications-header-text">
+      <h1>Notifications</h1>
+      <p>Activity, messages, follows and updates.</p>
+    </div>
+    <button class="btn-mark-all-read" type="button" onclick="markAllRead()" aria-label="Mark all notifications as read">
+      <i class="fas fa-check-double"></i> Mark all as read
+    </button>
+  </div>
+  <div class="notifications-filters" id="notifications-filters" role="tablist" aria-label="Filter notifications">
+    <button class="notif-filter-btn active" data-filter="all" onclick="filterNotifications('all')" role="tab" aria-selected="true">All</button>
+    <button class="notif-filter-btn" data-filter="like" onclick="filterNotifications('like')" role="tab">Likes</button>
+    <button class="notif-filter-btn" data-filter="comment" onclick="filterNotifications('comment')" role="tab">Comments</button>
+    <button class="notif-filter-btn" data-filter="follow" onclick="filterNotifications('follow')" role="tab">Follows</button>
+    <button class="notif-filter-btn" data-filter="mention" onclick="filterNotifications('mention')" role="tab">Mentions</button>
+  </div>
+  <div id="notifications-container" class="notifications-card">
+    <div class="loading"><div class="spinner"></div></div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Connect Instagram - SocialHub{% endblock %}
+{% block page_class %}connect-instagram{% endblock %}
+{% block content %}
+<section class="content-stack narrow"><div class="hero-card"><div class="hero-content"><span class="hero-kicker"><i class="fab fa-instagram"></i> Official API only</span><h1>Connect your Instagram account.</h1><p>SocialHub never asks for your Instagram password. You will be redirected to Meta OAuth.</p><div class="hero-actions"><a href="/api/instagram/connect" class="btn btn-primary"><i class="fas fa-link"></i> Connect Instagram</a><button class="btn btn-outline" onclick="loadInstagramStatus()">Check status</button></div><div id="instagram-status" class="mini-list"></div></div></div></section>
+{% endblock %}

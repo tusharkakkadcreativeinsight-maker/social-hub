@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reels - SocialHub</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#e1306c">
+</head>
+<body class="reels-page">
+    <nav class="navbar">
+        <a href="/" class="logo"><i class="fas fa-camera-retro"></i> Social<span>Hub</span></a>
+        <div class="nav-links" id="nav-links"></div>
+    </nav>
+    <div class="container fade-in">
+        <form id="reel-upload-form" class="card slide-up" style="margin-bottom:16px">
+            <h3 style="margin-bottom:12px">Create Reel</h3>
+            <div class="form-group">
+                <input type="file" id="reel-file" accept="video/*" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="reel-caption" placeholder="Caption (optional)">
+            </div>
+            <div class="advanced-grid" style="margin-bottom:12px">
+                <input type="number" id="reel-trim-start" placeholder="Trim start seconds" min="0" step="0.1">
+                <input type="number" id="reel-trim-end" placeholder="Trim end seconds" min="0" step="0.1">
+                <input type="text" id="reel-text-overlay" placeholder="Text overlay">
+                <input type="text" id="reel-filter-name" placeholder="Filter name">
+                <input type="text" id="reel-music-name" placeholder="Music name">
+            </div>
+            <button type="button" class="btn btn-outline" onclick="generateCaptionForForm()"><i class="fas fa-wand-magic-sparkles"></i> Generate Caption</button>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-video"></i> Upload Reel</button>
+        </form>
+        <div class="reels-container slide-up" id="reels-container">
+            <div class="loading"><div class="spinner"></div></div>
+        </div>
+    </div>
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/animations.js"></script>
+</body>
+</html>

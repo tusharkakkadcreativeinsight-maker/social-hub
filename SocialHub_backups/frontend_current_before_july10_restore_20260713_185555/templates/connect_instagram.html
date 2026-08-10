@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Instagram Account - SocialHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/animations.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="/" class="logo">SocialHub</a>
+        <div class="nav-links" id="nav-links"></div>
+    </nav>
+
+    <main class="container-wide instagram-connect-page">
+        <section class="ig-hero-card fade-in">
+            <div>
+                <span class="card-kicker"><i class="fab fa-instagram"></i> Official Meta API only</span>
+                <h1>Connect Instagram Account</h1>
+                <p>Authorize your own Instagram Business/Creator account. SocialHub only fetches data allowed by Meta Graph API for your connected account.</p>
+                <div class="card-actions">
+                    <button class="btn btn-primary" id="connectBtn"><i class="fab fa-instagram"></i> Connect Instagram</button>
+                    <button class="btn btn-outline" id="refreshBtn"><i class="fas fa-sync"></i> Fetch Real Media</button>
+                    <button class="btn btn-danger" id="disconnectBtn"><i class="fas fa-link-slash"></i> Disconnect</button>
+                </div>
+            </div>
+            <div class="ig-safety-box">
+                <h3><i class="fas fa-shield-halved"></i> Safety rules</h3>
+                <ul>
+                    <li>No scraping and no fake/demo data.</li>
+                    <li>No private or unauthorized accounts.</li>
+                    <li>Access tokens are encrypted server-side.</li>
+                    <li>You select what to import.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="advanced-card" id="accountBox">
+            <h2>Connected account</h2>
+            <div id="accountStatus" class="loading">Checking connection...</div>
+        </section>
+
+        <section class="advanced-card">
+            <div class="section-head">
+                <div>
+                    <h2>Imported media gallery</h2>
+                    <p class="text-muted">Real posts/reels returned by Instagram Graph API for your authorized account.</p>
+                </div>
+                <button class="btn btn-primary" id="importSelectedBtn"><i class="fas fa-download"></i> Import selected</button>
+            </div>
+            <div id="importProgress" class="ig-progress hidden"><span></span></div>
+            <div id="mediaGrid" class="ig-media-grid"></div>
+        </section>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/animations.js"></script>
+    <script>
+        const selectedMedia = new Set();
+
+        function setProgress(text, done=false) {
+            const box = document.getElementById('importProgress');
+            box.classList.remove('hidden');
+            box.querySelector('span').textContent = text;
+            if (done) setTimeout(() => box.classList.add('hidden'), 2500);
+        }
+
+        async function loadIgAccount() {
+            const status = document.getElementById('accountStatus');
+            try {
+                const data = await api('/instagram/account');
+                if (!data.connected) {
+                    status.innerHTML = '<div class="empty-state"><i class="fab fa-instagram fa-2x"></i><h3>Not connected</h3><p>Click Connect Instagram to authorize your own account.</p></div>';
+                    return;
+                }
+                const a = data.account;
+                status.innerHTML = `<div class="ig-account-row">
+                    <img src="${a.profile_picture_url || '/static/images/default-avatar.png'}" class="avatar-lg" onerror="this.src='/static/images/default-avatar.png'">
+                    <div><h3>@${escapeHtml(a.username)}</h3><p>${escapeHtml(a.account_type || 'Instagram professional account')}</p><small>Connected ${formatTime(a.connected_at)}</small></div>
+                </div>`;
+                loadIgMedia(false);
+            } catch (e) {
+                status.innerHTML = `<p class="text-danger">${escapeHtml(e.message || 'Could not load account')}</p>`;
+            }
+        }
+
+        async function connectInstagram() {
+            const data = await api('/instagram/connect');
+            window.location.href = data.auth_url;
+        }
+
+        async function disconnectInstagram() {
+            if (!confirm('Disconnect Instagram and remove stored encrypted token?')) return;
+            await api('/instagram/disconnect', { method: 'DELETE' });
+            toast('Instagram disconnected', 'success');
+            document.getElementById('mediaGrid').innerHTML = '';
+            loadIgAccount();
+        }
+
+        async function loadIgMedia(refresh=true) {
+            const grid = document.getElementById('mediaGrid');
+            grid.innerHTML = '<div class="loading">Fetching authorized Instagram media...</div>';
+            setProgress(refresh ? 'Fetching real Instagram data...' : 'Loading saved media...');
+            const data = await api(`/instagram/media?refresh=${refresh ? 'true' : 'false'}&limit=50`);
+            if (!data.media.length) {
+                grid.innerHTML = '<div class="empty-state"><i class="fas fa-images fa-2x"></i><h3>No media returned</h3><p>Your account may have no API-visible media or missing permissions.</p></div>';
+                setProgress('No media found', true);
+                return;
+            }
+            grid.innerHTML = data.media.map(item => `<article class="ig-media-card ${item.imported_at ? 'imported' : ''}">
+                <label class="ig-select"><input type="checkbox" onchange="toggleMedia('${item.id}', this.checked)"> Select</label>
+                <div class="ig-preview">${item.media_type === 'VIDEO' ? `<video src="${item.media_url}" controls poster="${item.thumbnail_url || ''}"></video>` : `<img src="${item.media_url || item.thumbnail_url || '/static/images/default-avatar.png'}" loading="lazy">`}</div>
+                <div class="ig-media-meta"><strong>${escapeHtml(item.media_type)}</strong><p>${escapeHtml((item.caption || '').slice(0, 120))}</p><small>❤ ${item.like_count || 0} · 💬 ${item.comments_count || 0}</small></div>
+                <div class="card-actions"><button class="btn btn-sm btn-outline" onclick="importOne('${item.id}')">Import</button><button class="btn btn-sm btn-primary" onclick="createPost('${item.id}')">Create Post</button>${item.media_type === 'VIDEO' ? `<button class="btn btn-sm btn-secondary" onclick="createReel('${item.id}')">Create Reel</button>` : ''}</div>
+            </article>`).join('');
+            setProgress(`Loaded ${data.media.length} real Instagram media items`, true);
+        }
+
+        function toggleMedia(id, checked) { checked ? selectedMedia.add(id) : selectedMedia.delete(id); }
+        async function importOne(id) { await api(`/instagram/import/${id}`, { method: 'POST' }); toast('Imported media', 'success'); loadIgMedia(false); }
+        async function importSelected() { await api('/instagram/import', { method: 'POST', body: JSON.stringify([...selectedMedia]) }); toast('Selected media imported', 'success'); selectedMedia.clear(); loadIgMedia(false); }
+        async function createPost(id) { const r = await api(`/instagram/import/${id}/post`, { method: 'POST' }); toast('Created post ' + r.post_id, 'success'); }
+        async function createReel(id) { const r = await api(`/instagram/import/${id}/reel`, { method: 'POST' }); toast('Created reel ' + r.reel_id, 'success'); }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('connectBtn').onclick = connectInstagram;
+            document.getElementById('refreshBtn').onclick = () => loadIgMedia(true);
+            document.getElementById('disconnectBtn').onclick = disconnectInstagram;
+            document.getElementById('importSelectedBtn').onclick = importSelected;
+            loadIgAccount();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stories - SocialHub</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar"><a href="/" class="logo"><i class="fas fa-heart"></i> SocialHub</a><div class="nav-search"><i class="fas fa-search"></i><input type="text" id="global-search" placeholder="Search creators, posts, #tags..." onkeypress="if(event.key==='Enter')window.location.href='/search?q='+this.value"></div><div class="nav-links" id="nav-links"></div></nav>
+    <div class="container"><div class="page-header"><h2><i class="fas fa-clock" style="color:var(--primary);margin-right:10px"></i>Stories</h2><button class="btn btn-primary" onclick="showCreateStory()"><i class="fas fa-plus"></i> Your story</button></div><div class="stories-card" id="stories-container"><div class="loading"><div class="spinner"></div></div></div></div>
+    <div class="modal-overlay" id="create-story-modal" onclick="if(event.target===this)closeModal('create-story-modal')"><div class="modal"><div class="modal-header"><h3><i class="fas fa-circle-plus"></i> Create Story</h3><button class="modal-close" onclick="closeModal('create-story-modal')">&times;</button></div><form onsubmit="handleCreateStory(event)"><textarea id="story-caption" class="form-control" rows="3" placeholder="Share a moment..."></textarea><label class="upload-dropzone"><i class="fas fa-images"></i><span>Select story media</span><small>Image or video, visible for 24 hours · max 100MB</small><input type="file" id="story-file" accept="image/jpeg,image/png,image/gif,image/webp,video/mp4,video/webm,video/quicktime,video/x-msvideo,.jpg,.jpeg,.png,.gif,.webp,.mp4,.webm,.mov,.avi" required></label><div id="story-preview" class="upload-preview"></div><div id="story-upload-progress" class="upload-progress hidden"><div id="story-upload-progress-fill"></div><span id="story-upload-progress-text"></span></div><button type="submit" class="btn btn-primary btn-block"><i class="fas fa-cloud-upload-alt"></i> Share Story</button></form></div></div>
+    <div class="story-viewer" id="story-viewer" onclick="if(event.target===this)this.classList.remove('active')"></div>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

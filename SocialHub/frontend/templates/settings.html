@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Settings - SocialHub{% endblock %}
+{% block page_class %}settings{% endblock %}
+{% block content %}
+<section class="settings-page"><div class="page-header"><h1>Settings</h1></div><div class="settings-layout"><nav class="settings-sidebar"><a class="active" href="#security" data-tab="security">Security</a><a href="#account" data-tab="account">Account</a><a href="#privacy" data-tab="privacy">Privacy</a><a href="#notifications" data-tab="notifications">Notifications</a><a href="#appearance" data-tab="appearance">Appearance</a></nav><div class="settings-content"><section class="settings-panel"><h2>Security</h2><form id="change-password-form" class="form-grid"><label>Current password<input class="form-control" type="password" id="current-password" autocomplete="current-password"></label><label>New password<input class="form-control" type="password" id="new-password" autocomplete="new-password"></label><button class="btn btn-primary" type="submit">Change password</button></form></section><section class="settings-panel"><h2>Appearance</h2><p>Choose light, dark or system theme.</p><button class="btn btn-outline theme-toggle" type="button"><i class="fas fa-moon"></i> Cycle theme</button></section></div></div></section>
+{% endblock %}
