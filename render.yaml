@@ -2,12 +2,11 @@ services:
   # Single Python Web Service - FastAPI serves both API and frontend templates
   - type: web
     name: socialhub-api
-    rootDir: SocialHub
     runtime: python
     region: oregon
     plan: free
-    buildCommand: pip install -r requirements.txt
-    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    buildCommand: cd SocialHub && pip install -r requirements.txt
+    startCommand: cd SocialHub/backend && uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: DATABASE_URL
         sync: false
@@ -33,5 +32,5 @@ services:
         value: "false"
     disk:
       name: uploads
-      mountPath: /opt/render/project/src/frontend/uploads
+      mountPath: /opt/render/project/src/SocialHub/frontend/uploads
       sizeGB: 1
