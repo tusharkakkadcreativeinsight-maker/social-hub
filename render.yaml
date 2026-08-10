@@ -1,3 +1,10 @@
+databases:
+  - name: socialhub-db
+    databaseName: socialhub
+    user: socialhub
+    plan: free
+    region: oregon
+
 services:
   # Single Python Web Service - FastAPI serves both API and frontend templates
   - type: web
@@ -9,9 +16,13 @@ services:
     startCommand: cd SocialHub/backend && uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: socialhub-db
+          property: connectionString
       - key: DATABASE_URL_ASYNC
-        sync: false
+        fromDatabase:
+          name: socialhub-db
+          property: connectionString
       - key: SECRET_KEY
         generateValue: true
       - key: DEBUG
