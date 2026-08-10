@@ -9,7 +9,7 @@ services:
   # Single Python Web Service - FastAPI serves both API and frontend templates
   - type: web
     name: socialhub-api
-    runtime: python
+    env: python
     region: oregon
     plan: free
     buildCommand: pip install -r requirements.txt
