@@ -1,4 +1,4 @@
-﻿import os
+import os
 import sys
 from fastapi import FastAPI, WebSocket, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -130,6 +130,7 @@ app.include_router(live_router)
 
 
 @app.get("/api/health")
+@app.get("/health")
 def health_check():
     """Return a small, non-sensitive runtime health payload.
 
