@@ -1,6 +1,0 @@
-{% extends 'base.html' %}
-{% block title %}Stories - SocialHub{% endblock %}
-{% block page_name %}stories{% endblock %}
-{% block content %}
-<header class="card-title-row"><div><h1 class="page-title">Stories</h1><p class="page-subtitle">View moments, reply, react, and create highlights.</p></div><button class="btn btn-primary" data-action="open-modal" data-target="create-story-modal">Create story</button></header><section class="section-card"><div class="stories-row">{% for i in range(10) %}<button class="story-bubble"><img src="/static/images/default_avatar.svg" alt=""><span>Story {{ i+1 }}</span></button>{% endfor %}</div></section><section id="story-viewer-page" class="story-viewer-shell"></section>
-{% endblock %}

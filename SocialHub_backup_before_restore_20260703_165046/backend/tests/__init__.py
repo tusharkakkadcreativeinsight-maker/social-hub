@@ -1,1 +1,0 @@
-# SocialHub backend tests

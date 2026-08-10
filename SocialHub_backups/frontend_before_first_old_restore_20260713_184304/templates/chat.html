@@ -1,6 +1,0 @@
-{% extends 'base.html' %}
-{% block title %}Messages - SocialHub{% endblock %}
-{% block page_name %}chat{% endblock %}
-{% block content %}
-<section class="chat-layout" id="chat-layout"><aside class="conversation-list"><div class="section-card"><h2>Messages</h2><input id="chat-search" class="form-control" placeholder="Search conversations"></div><div id="conversation-list"><div class="skeleton-list"></div></div></aside><section class="chat-window"><header class="section-card card-title-row"><button class="btn btn-secondary btn-sm" data-action="chat-back"><i class="fas fa-arrow-left"></i></button><strong id="active-chat-title">Select a conversation</strong><span id="typing-indicator" class="chip hidden">Typing...</span></header><div id="message-list" class="message-list"></div><form id="message-form" class="message-composer" data-action="message-form"><button class="icon-button" type="button" data-action="chat-file-pick"><i class="fas fa-plus"></i></button><input id="chat-file-input" type="file" accept="image/*,video/*,audio/*" hidden><input id="message-input" class="form-control" placeholder="Message..."><button class="btn btn-primary"><i class="fas fa-paper-plane"></i></button></form></section></section>
-{% endblock %}

@@ -1,6 +1,0 @@
-{% extends 'base.html' %}
-{% block title %}Settings - SocialHub{% endblock %}
-{% block page_name %}settings{% endblock %}
-{% block content %}
-<header class="page-hero"><h1 class="page-title">Settings</h1><p class="page-subtitle">Manage account, privacy, security, notifications, appearance, sessions and data.</p></header><section class="settings-layout"><nav class="settings-nav">{% for p in ['profile','account','privacy','security','password','2fa','notifications','appearance','blocked','sessions','data','danger'] %}<button data-panel="{{ p }}" class="{% if loop.first %}active{% endif %}">{{ p|title }}</button>{% endfor %}</nav><div class="section-card">{% for p in ['profile','account','privacy','security','password','2fa','notifications','appearance','blocked','sessions','data','danger'] %}<section data-settings-panel="{{ p }}" {% if not loop.first %}hidden{% endif %}><h2>{{ p|title }}</h2><p class="muted">Premium controls for {{ p }} settings.</p><div class="content-grid"><input class="form-control" placeholder="Setting value"><button class="btn btn-primary">Save changes</button></div></section>{% endfor %}</div></section>
-{% endblock %}

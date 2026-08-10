@@ -1,6 +1,0 @@
-{% extends 'base.html' %}
-{% block title %}Profile - SocialHub{% endblock %}
-{% block page_name %}profile{% endblock %}
-{% block content %}
-<section class="section-card"><div class="profile-cover"></div><div class="profile-head"><img class="profile-photo" src="/static/images/default_avatar.svg" alt="Profile photo"><div><h1>{{ username or 'SocialHub Creator' }} <i class="fas fa-check-circle gradient-text"></i></h1><p class="muted">@{{ username or 'creator' }} - Digital creator</p><p>Building premium social moments on SocialHub. Bio, website, location, category and profile details appear here.</p><div class="profile-stats"><b>128 Posts</b><b>24.8K Followers</b><b>640 Following</b></div><div class="hero-actions"><button class="btn btn-primary">Follow</button><a class="btn btn-secondary" href="/chat">Message</a><button class="btn btn-outline">Share</button></div></div></div></section><div class="tabs"><button class="tab active">Posts</button><button class="tab">Reels</button><button class="tab">Tagged</button><button class="tab">Saved</button></div><section class="profile-grid">{% for i in range(12) %}<a class="tile" href="/posts"><div class="empty-state"><i class="fas fa-image"></i></div></a>{% endfor %}</section>
-{% endblock %}
