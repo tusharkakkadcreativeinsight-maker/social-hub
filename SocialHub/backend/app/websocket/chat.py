@@ -13,34 +13,47 @@ class ConnectionManager:
     """Manage WebSocket connections for real-time chat."""
 
     def __init__(self):
-        # user_id -> WebSocket
-        self.active_connections: Dict[str, WebSocket] = {}
+        # user_id -> List of WebSockets (supports multiple tabs)
+        self.active_connections: Dict[str, list[WebSocket]] = {}
         # chat_id -> set of user_ids
         self.chat_rooms: Dict[str, Set[str]] = {}
 
     async def connect(self, websocket: WebSocket, user_id: str):
         await websocket.accept()
-        self.active_connections[user_id] = websocket
+        if user_id not in self.active_connections:
+            self.active_connections[user_id] = []
+        self.active_connections[user_id].append(websocket)
 
-    def disconnect(self, user_id: str):
+    def disconnect(self, websocket: WebSocket, user_id: str):
         if user_id in self.active_connections:
-            del self.active_connections[user_id]
-        # Remove from all chat rooms
-        for chat_id in list(self.chat_rooms.keys()):
-            if user_id in self.chat_rooms[chat_id]:
-                self.chat_rooms[chat_id].discard(user_id)
-                if not self.chat_rooms[chat_id]:
-                    del self.chat_rooms[chat_id]
+            if websocket in self.active_connections[user_id]:
+                self.active_connections[user_id].remove(websocket)
+            if not self.active_connections[user_id]:
+                del self.active_connections[user_id]
+                # Remove from all chat rooms only if no connections left
+                for chat_id in list(self.chat_rooms.keys()):
+                    if user_id in self.chat_rooms[chat_id]:
+                        self.chat_rooms[chat_id].discard(user_id)
+                        if not self.chat_rooms[chat_id]:
+                            del self.chat_rooms[chat_id]
 
     async def send_personal_message(self, message: dict, user_id: str):
         if user_id in self.active_connections:
-            await self.active_connections[user_id].send_json(message)
+            for ws in self.active_connections[user_id]:
+                try:
+                    await ws.send_json(message)
+                except Exception:
+                    pass
 
     async def broadcast_to_chat(self, chat_id: str, message: dict, exclude_user_id: str = None):
         if chat_id in self.chat_rooms:
             for user_id in self.chat_rooms[chat_id]:
                 if user_id != exclude_user_id and user_id in self.active_connections:
-                    await self.active_connections[user_id].send_json(message)
+                    for ws in self.active_connections[user_id]:
+                        try:
+                            await ws.send_json(message)
+                        except Exception:
+                            pass
 
     def join_chat(self, chat_id: str, user_id: str):
         if chat_id not in self.chat_rooms:
@@ -205,16 +218,17 @@ async def handle_chat_websocket(websocket: WebSocket, token: str):
                         db.close()
 
     except WebSocketDisconnect:
-        manager.disconnect(user_id)
+        manager.disconnect(websocket, user_id)
         # Notify chat rooms that user is offline
-        for chat_id in list(manager.chat_rooms.keys()):
-            await manager.broadcast_to_chat(
-                chat_id,
-                {
-                    "type": "user_offline",
-                    "user_id": user_id,
-                    "timestamp": isoformat_utc_z(utcnow_naive())
-                }
-            )
+        if user_id not in manager.active_connections:
+            for chat_id in list(manager.chat_rooms.keys()):
+                await manager.broadcast_to_chat(
+                    chat_id,
+                    {
+                        "type": "user_offline",
+                        "user_id": user_id,
+                        "timestamp": isoformat_utc_z(utcnow_naive())
+                    }
+                )
     except Exception as e:
-        manager.disconnect(user_id)
+        manager.disconnect(websocket, user_id)

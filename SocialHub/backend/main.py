@@ -38,7 +38,10 @@ from app.websocket.live import handle_live_websocket
 load_dotenv()
 
 # Configure logging
-logging.basicConfig(level=logging.INFO)
+if settings.DEBUG:
+    logging.basicConfig(level=logging.DEBUG)
+else:
+    logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 # Create FastAPI app
@@ -59,6 +62,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.error(f"Unhandled exception: {exc}", exc_info=True)
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal Server Error"}
+    )
+
 
 # Paths
 frontend_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend")
