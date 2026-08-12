@@ -141,15 +141,16 @@ class Settings:
     # preferred; SMTP_* aliases are kept for backward compatibility.
     EMAIL_HOST: str = os.getenv("EMAIL_HOST", os.getenv("SMTP_HOST", ""))
     EMAIL_PORT: int = int(os.getenv("EMAIL_PORT", os.getenv("SMTP_PORT", "587")))
-    EMAIL_USER: str = os.getenv("EMAIL_USER", os.getenv("SMTP_USER", ""))
+    EMAIL_USER: str = os.getenv("EMAIL_USER", os.getenv("SMTP_USERNAME", os.getenv("SMTP_USER", "")))
     EMAIL_PASSWORD: str = os.getenv("EMAIL_PASSWORD", os.getenv("SMTP_PASSWORD", ""))
-    EMAIL_FROM: str = os.getenv("EMAIL_FROM", os.getenv("EMAIL_FROM_ADDRESS", os.getenv("EMAIL_USER", "noreply@socialhub.com")))
+    EMAIL_FROM: str = os.getenv("EMAIL_FROM", os.getenv("SMTP_FROM_EMAIL", os.getenv("EMAIL_FROM_ADDRESS", os.getenv("EMAIL_USER", "noreply@socialhub.com"))))
     EMAIL_FROM_NAME: str = os.getenv("EMAIL_FROM_NAME", "SocialHub Security")
     EMAIL_REPLY_TO: str = os.getenv("EMAIL_REPLY_TO", "support@socialhub.com")
     SUPPORT_EMAIL: str = os.getenv("SUPPORT_EMAIL", "support@socialhub.com")
     SMTP_HOST: str = EMAIL_HOST
     SMTP_PORT: int = EMAIL_PORT
     SMTP_USER: str = EMAIL_USER
+    SMTP_USERNAME: str = EMAIL_USER
     SMTP_PASSWORD: str = EMAIL_PASSWORD
 
     # Upload

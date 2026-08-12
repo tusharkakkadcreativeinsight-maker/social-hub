@@ -12,8 +12,9 @@ services:
     env: python
     region: oregon
     plan: free
-    buildCommand: cd SocialHub && pip install -r requirements.txt
-    startCommand: cd SocialHub/backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    rootDir: SocialHub
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
         value: "3.11.8"

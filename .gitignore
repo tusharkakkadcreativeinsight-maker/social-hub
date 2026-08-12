@@ -1,0 +1,12 @@
+# Ignore local database and backup files
+*.db
+*.db-shm
+*.db-wal
+SocialHub_backups/
+SocialHub_safety_backup_*/
+SocialHub_backup_before_restore_*/
+
+# Standard gitignore
+__pycache__/
+*.pyc
+.env
