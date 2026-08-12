@@ -4,7 +4,8 @@ import hashlib
 import base64
 from datetime import datetime, timedelta, timezone
 from typing import Optional
-from jose import JWTError, jwt
+import jwt
+from jwt import PyJWTError as JWTError
 from ..config import settings
 
 
