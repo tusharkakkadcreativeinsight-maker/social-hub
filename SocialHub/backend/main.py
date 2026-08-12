@@ -685,7 +685,7 @@ def validate_runtime_dependencies():
         "sqlalchemy": "sqlalchemy",
         "pydantic": "pydantic",
         "PIL": "Pillow",
-        "jose": "python-jose",
+        "jwt": "PyJWT",
         "multipart": "python-multipart",
     }
     if settings.DATABASE_URL_ASYNC.startswith("sqlite+aiosqlite"):
